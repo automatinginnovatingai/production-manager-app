@@ -1,9 +1,10 @@
 Initial GitHub release for version 1.1.1.
 
 This release includes:
-- Basic installer
-- Pro installer
-- Enterprise installer
+- Basic version
+- Pro version
+- Enterprise version
+- All version included in one app
 
 This version is the current stable build being distributed through the updater.
 
@@ -17,4 +18,4 @@ Note: Internet access is required for initial license validation.
 
 
 
-Production_Manager_App_Basic_Installer_v1.1.1.exe
+Production_Manager_App_v1.1.3.exe
