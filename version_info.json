@@ -1,18 +1,7 @@
 {
-    "basic": {
-        "version": "1.1.1",
-        "url": "https://github.com/BirdDawg305/production-manager-app/releases/download/v1.1.1/basic_update.zip"
-    },
-    "pro": {
-        "version": "1.1.1",
-        "url": "https://github.com/BirdDawg305/production-manager-app/releases/download/v1.1.1/pro_update.zip"
-    },
-    "enterprise": {
-        "version": "1.1.2",
-        "url": "https://github.com/BirdDawg305/production-manager-app/releases/download/v1.1.1/enterprise_update.zip"
-    },
+
     "unified": {
-        "version": "1.1.0",
+        "version": "1.1.3",
         "url": "https://github.com/BirdDawg305/production-manager-app/releases/download/v1.1.0/unified_update.zip"
     }
 }

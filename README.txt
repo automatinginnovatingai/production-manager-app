@@ -35,16 +35,15 @@ The app is offered in three tiers to suit different team sizes and reporting nee
 |-------------|--------------------------------------------------------------------------|
 | **Basic**   | Single-user access, manual payroll entry, limited export customization   |
 | **Pro**     | Multi-user support, auto-pay splitting, enhanced Excel exports           |
-| **Enterprise** | All Pro features + custom reporting, priority support, audit logging |
+| **Enterprise** | All Pro features + custom reporting, priority support, audit logging  |
+| **Installer Add-on** | Allows installers to login and complete production paperwork.   |
+| **User must purchase Enterprise version to use Installer Add-on license.               |
 
 All versions are distributed via Gumroad. License keys are unique per purchase and required to unlock the app.
 
 👉 [View all versions and purchase on Gumroad]
-Basic version: https://automateai56.gumroad.com/l/bxuzj?_gl=1*1fu2g0l*_ga*MjAxMzkzNDAxNy4xNzUzMTMzODY2*_ga_6LJN6D94N6*czE3NTMxMzM4NjYkbzEkZzEkdDE3NTMxMzM5MzQkajU3JGwwJGgw
-
-Pro version: https://automateai56.gumroad.com/l/exuvt
-
-Enterprise version: https://automateai56.gumroad.com/l/gnaqy
+Production Manager App Gumroad Page
+https://automateai56.gumroad.com/l/comcj
 
 ## 📁 This Repo
 
