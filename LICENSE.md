@@ -7,4 +7,4 @@ Unauthorized copying, distribution, or reverse engineering of the software is st
 
 The software is provided "AS IS", without warranty of any kind, express or implied.
 
-For access to the app, visit: automatinginnovatingai.com
+For access to the app, visit: automatinginnovatingai.wordpress.com
