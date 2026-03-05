@@ -38,7 +38,8 @@ The app is offered in three tiers to suit different team sizes and reporting nee
 | **Enterprise** | All Pro features + custom reporting, priority support, audit logging  |
 | **Installer Add-on** | Allows installers to login and complete production paperwork    |
 | **User must purchase Enterprise version to use Installer Add-on license                |
-| **Admin Add-on** | Allows additional administrators to login to app on all 3 versions   |
+| **Admin Add-on** | Allows additional administrators to login to app on all 3 versions  |
+| **User must purchase Admin Add-on license.                                             |
 
 All versions are distributed via Gumroad. License keys are unique per purchase and required to unlock the app.
 
