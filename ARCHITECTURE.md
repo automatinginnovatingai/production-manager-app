@@ -45,15 +45,17 @@ Versions:
 The app is offered in three tiers to suit different team sizes and reporting needs:
     The Production Manager App is available in three tiers, tailored to different team sizes and operational needs:
         • Basic
-            Supports up to 2 admin accounts with manual payroll entry.
+            Supports multiple admin accounts with seperate Admin Add-on license.
+            Provides all essential production‑management features for individuals or small teams.
             Includes limited export customization and automatic database cleanup.
         • Pro
-            Supports up to 3 admin accounts with automatic payroll splitting.
+            Supports multiple admin accounts with seperate Admin Add-on license.
             Enhanced Excel exports and prepopulated database fields for faster paperwork:
             material details, employee profiles, and builder information.
         • Enterprise
             Includes all Pro features, plus:
-            Supports up to 4 admin accounts.
+            Supports multiple admin accounts with seperate Admin Add-on license.
+            Supports multiple installer accounts with seperate Installer Add-on license.
             • Custom reporting templates
             • Priority support
             • Installer login functionality
