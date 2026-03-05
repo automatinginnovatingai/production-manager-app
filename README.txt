@@ -36,8 +36,9 @@ The app is offered in three tiers to suit different team sizes and reporting nee
 | **Basic**   | Single-user access, manual payroll entry, limited export customization   |
 | **Pro**     | Multi-user support, auto-pay splitting, enhanced Excel exports           |
 | **Enterprise** | All Pro features + custom reporting, priority support, audit logging  |
-| **Installer Add-on** | Allows installers to login and complete production paperwork.   |
-| **User must purchase Enterprise version to use Installer Add-on license.               |
+| **Installer Add-on** | Allows installers to login and complete production paperwork    |
+| **User must purchase Enterprise version to use Installer Add-on license                |
+| **Admin Add-on** | Allows additiona administrators to login to app on all 3 versions   |
 
 All versions are distributed via Gumroad. License keys are unique per purchase and required to unlock the app.
 
