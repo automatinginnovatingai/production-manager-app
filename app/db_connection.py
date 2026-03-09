@@ -13,17 +13,26 @@ def get_db_connection():
     user = cfg["sql_user"]
     pwd = cfg["sql_pwd"]
 
-    if not all([host, db, user, pwd]):
-        raise ValueError("SQL Server connection is not fully configured on this machine.")
+    # Windows Authentication mode
+    if user is None and pwd is None:
+        conn_str = (
+            f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+            f"SERVER={host};"
+            f"DATABASE={db};"
+            f"Trusted_Connection=yes;"
+            "Encrypt=no;"
+        )
 
-    conn_str = (
-        f"DRIVER={{ODBC Driver 18 for SQL Server}};"
-        f"SERVER={host},1433;"
-        f"DATABASE={db};"
-        f"UID={user};"
-        f"PWD={pwd};"
-        "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=60;"
-    )
+    # SQL Authentication mode
+    else:
+        conn_str = (
+            f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+            f"SERVER={host};"
+            f"DATABASE={db};"
+            f"UID={user};"
+            f"PWD={pwd};"
+            "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=60;"
+        )
 
     conn = pyodbc.connect(conn_str)
     return conn, conn.cursor()

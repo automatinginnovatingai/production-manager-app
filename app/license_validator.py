@@ -6,7 +6,6 @@ import webbrowser
 
 PRODUCT_ID = "f2rOQz_MvWMUUkcQYFVaFw=="
 
-
 def gumroad_verify(license_key: str) -> dict | None:
     url = "https://api.gumroad.com/v2/licenses/verify"
     payload = {
@@ -62,7 +61,7 @@ class LicensePageFrame(tk.Frame):
         self.entry.pack(pady=5)
 
         welcome_text = (
-            "Welcome to the Automating Innovating AI Production Manager App Pro Version!\n\n"
+            "Welcome to the Automating Innovating AI Production Manager App SQL Server Express Version!\n\n"
             "Please enter the Gumroad license key you received after purchase.\n"
             "You’ll find it on the Gumroad receipt and confirmation email.\n\n"
             "If you do not have a license key, click the button below to purchase one.\n\n"

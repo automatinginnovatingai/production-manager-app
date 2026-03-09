@@ -8,24 +8,24 @@ class App(tk.Tk):
         self.title("Automating Innovating AI - Production Manager App")
         self.attributes("-fullscreen", True)
 
-        # key: page_class, value: frame instance
+        # Only store frames AFTER they are created
         self.frames = {}
 
     def exit_session(self):
         session_context.exit_session()
-        self.destroy()    
-
-    def add_frame(self, page_class):
-        frame = page_class(self)
-        self.frames[page_class] = frame
-        frame.place(relwidth=1, relheight=1)
+        self.destroy()
 
     def show_frame(self, page_class):
-        frame = self.frames[page_class]
+        # Create frame only when needed
+        if page_class not in self.frames:
+            frame = page_class(self)
+            self.frames[page_class] = frame
+            frame.place(relwidth=1, relheight=1)
+        else:
+            frame = self.frames[page_class]
 
-        # Optional hook; safe to ignore if frame doesn't define it
-        if hasattr(frame, "on_show"):
-            if frame.on_show() is False:
-                return
-
+        # Run on_show AFTER frame is visible
         frame.tkraise()
+
+        if hasattr(frame, "on_show"):
+            frame.on_show()
