@@ -83,7 +83,7 @@ class LicensePageFrame(tk.Frame):
             fg="blue",
             bg="gold",
             cursor="hand2",
-            command=lambda: webbrowser.open("https://automateai56.gumroad.com/l/comcj")
+            command=lambda: webbrowser.open("https://automateai56.gumroad.com/l/koxupw")
         ).pack(pady=5)
 
     # -----------------------------
