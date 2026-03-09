@@ -4,7 +4,7 @@ from tkinter import messagebox
 import requests
 import webbrowser
 
-PRODUCT_ID = "VyL6eH6uzltRd1VdYG90xQ=="
+PRODUCT_ID = "f2rOQz_MvWMUUkcQYFVaFw=="
 
 
 def gumroad_verify(license_key: str) -> dict | None:
