@@ -5,6 +5,15 @@ This repository contains documentation for the Production Manager App—a closed
 The Production Manager App was built to modernize workflows in the construction industry—specifically within fiberglass insulation. After witnessing firsthand how companies rely on paper-heavy, manual processes to handle installer paperwork, I saw an opportunity to streamline operations.
 This app replaces inefficient routines with a secure, offline  solution that automates payroll calculations, centralizes job data, and generates Excel reports—no cloud dependency, no wasted time, and no paper trails. It’s designed to bring real-world construction workflows into the future of tech, without compromising operational safety or control.
 
+1. SQLite Version (Local Database – Easiest Setup)
+- Best for individuals, freelancers, and very small teams.
+- No database installation required.
+- Everything runs locally inside the app folder.
+- Fast, simple, and portable.
+- Limited to single‑user or very light multi‑user scenarios.
+- Not designed for large data volumes or multiple employees accessing the system at the same time.
+- Choose SQLite if you want the simplest setup and only need basic local use.
+
 ## 🔐 Key Features
 
 - Offline-first `.exe` app with no cloud dependencies
