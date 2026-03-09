@@ -31,6 +31,15 @@ This app requires a valid Gumroad license key to unlock full functionality.
 • If the license is invalid or revoked, access will be restricted.  
 Note: Internet access is required for initial license validation.
 
-
+Database
+---------
+SQLite Version (Local Database – Easiest Setup)
+- Best for individuals, freelancers, and very small teams.
+- No database installation required.
+- Everything runs locally inside the app folder.
+- Fast, simple, and portable.
+- Limited to single‑user or very light multi‑user scenarios.
+- Not designed for large data volumes or multiple employees accessing the system at the same time.
+- Choose SQLite if you want the simplest setup and only need basic local use.
 
 Production_Manager_App_v1.1.4.exe
