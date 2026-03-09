@@ -39,4 +39,4 @@ Filename: "{app}\Production Manager App SQL Server Express.exe"; Description: "L
 Filename: "{app}\README.txt"; Description: "View README"; Flags: postinstall shellexec skipifsilent
 
 [UninstallDelete]
-Type: filesandordirs; Name: "{userappdata}\Production_Manager_App_SQL_Server_Express_"
+Type: filesandordirs; Name: "{userappdata}\Production Manager App SQL Server Express"
