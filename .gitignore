@@ -1,0 +1,154 @@
+# Ignore Kubernetes configurations
+*.yaml
+!VirtualService.yaml
+!Gateway.yaml
+!DestinationRule.yaml
+!AuthorizationPolicy.yaml
+!deployment.yaml
+!service.yaml
+!docker-compose.yaml
+!ingress.yaml
+!isitio-operator.yaml
+!istioc.yaml
+!PeerAuthentication.yaml
+!ServiceAccount.yaml
+!pod-reader.yaml
+!pod-reader-binding.yaml
+
+
+# Ignore Istio configurations
+istio-*
+!VirtualService.yaml
+!Gateway.yaml
+!DestinationRule.yaml
+!AuthorizationPolicy.yaml
+!istio-config.yaml
+!istio-ingress.yaml
+!istio-operator.yaml
+# Ignore Kubernetes secrets
+secrets/
+*.crt
+*.key
+
+# Ignore logs and temporary files
+*.log
+tmp/
+*.pid
+
+# Ignore environment variables and sensitive files
+*.env
+*env
+*.dotenv
+*dotenv
+*pem
+*key
+*keys
+*key.key
+*keys.keys
+local_settings.py
+
+# Ignore virtual environments and dependencies
+venv/
+.venv/
+ENV/
+node_modules/
+
+# Ignore build artifacts
+build/
+dist/
+*.egg-info/
+develop-eggs/
+.eggs/
+lib/
+lib64/
+sdist/
+var/
+
+# Ignore caches and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.spec
+*.py[cod]
+*$py.class
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore source example and template files
+src/example/
+src/template/
+
+# Ignore database files (SQLite)
+*.db
+*.SQLite
+*.SQLite3
+
+# Ignore installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Ignore test, coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+cover/
+create_github_repo.txt
+# Ignore project-specific files
+.spyderproject
+.spyproject
+.ropeproject
+.site
+.scrapy
+.target
+
+# Ignore Jupyter Notebook cache
+.ipynb_checkpoints
+
+# Ignore pyenv files
+.python-version
+
+# Ignore mkdocs documentation
+docs/_build/
+
+
+#pyarmor/other
+
+.pyarmor
+.zip
+.list
+
+*.pyarmor
+*.zip
+*.list
+*hook
+build_app.ps1
+SmokeTest.logs
+SmokeTestLog.txt
+.log
+.logs
+.exe
+*.exe
+installer_build
+InstallerPayload
+Production_Manager_Installer.exe
+Production Manager App Enterprise.exe
+Production_Manager_App_Installer_Enterprise.exe
+.zip
+reset_user.py
+gumroad_license_key.txt
+# SQLite
+*.sqlite-shm
+*.sqlite-wal
+*.db-shm
+*.db-wal
+gumroad_test_info.txt

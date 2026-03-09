@@ -1,0 +1,15 @@
+[package]
+name = "automatinginnovatingaipmapp"
+version = "0.1.0"
+edition = "2021"
+description = "Production Manager Rust Logic"
+authors = ["Michael J. Williams <customerservice@automatinginnovatingaipmapp.com>"]
+
+[lib]
+name = "automatinginnovatingaipmapp"
+crate-type = ["cdylib"]
+
+[dependencies]
+serde = "1.0"  # Example Rust dependency
+tokio = { version = "1.0", features = ["full"] }
+pyo3 = { version = "0.18", features = ["extension-module"] }

@@ -1,0 +1,50 @@
+Automating-Innovating-AI-Production-Manager-App
+LICENSE AGREEMENT AND TERMS OF USE
+Automating and Innovating AI, LLC
+Effective Date: November 5, 2024
+
+1. INTRODUCTION
+By using, installing, or accessing this software ("Software"), you agree to be legally bound by this License Agreement and Terms of Use ("Agreement") issued by Automating and Innovating AI, LLC. If you do not agree with these terms, you are prohibited from using the Software.
+
+2. LICENSE GRANT
+You are granted a non-exclusive, non-transferable, revocable license to use the Software on a single computer system. This license does not convey ownership and is subject to compliance with this Agreement.
+
+3. RESTRICTIONS
+You agree not to:
+- Modify, translate, or create derivative works of the Software
+- Reverse engineer, decompile, or disassemble any part of the Software
+- Copy or distribute the Software except as expressly permitted
+- Share, lease, rent, or sublicense the Software
+- Use the Software in a manner that could disable, overload, or impair its functionality
+- Attempt unauthorized access to the Software’s systems or data
+
+Unauthorized use or distribution may result in termination of this license and legal action.
+
+4. INTELLECTUAL PROPERTY
+All intellectual property rights in the Software are owned and reserved by Automating and Innovating AI, LLC. This Agreement does not grant you any rights to trademarks, service marks, or other brand elements.
+
+5. CONFIDENTIALITY
+You acknowledge the Software contains proprietary information. You agree not to disclose or misuse such information and to protect it as confidential.
+
+6. TERMINATION
+This license is effective until terminated. It will automatically terminate without notice if you breach any term. Upon termination, you must destroy all copies of the Software. If distributed on physical media (e.g. USB), that medium remains the property of Automating and Innovating AI, LLC.
+
+7. INDEMNIFICATION
+You agree to indemnify and hold harmless Automating and Innovating AI, LLC from any claims, losses, liabilities, or damages arising from your use of the Software.
+
+8. LIMITATION OF LIABILITY
+In no event shall Automating and Innovating AI, LLC be liable for any indirect, incidental, or consequential damages related to the use or inability to use the Software.
+
+9. DATA USAGE
+You agree that Automating and Innovating AI, LLC may use your data and submitted information in accordance with applicable laws and for business or analytic purposes. This includes data on employees entered by the user, which will be treated as part of the business record.
+
+10. GOVERNING LAW
+This Agreement shall be governed by the laws of the United States. Jurisdiction and venue shall be determined by the registered location of Automating and Innovating AI, LLC.
+
+11. ENTIRE AGREEMENT
+This document represents the complete understanding between you and Automating and Innovating AI, LLC and supersedes any prior agreements.
+
+12. AMENDMENTS
+Automating and Innovating AI, LLC reserves the right to modify this Agreement at any time without notice. Continued use of the Software constitutes acceptance of the updated terms.
+
+Questions? Visit: www.automatinginnovatingai.com
