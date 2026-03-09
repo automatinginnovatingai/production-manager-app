@@ -68,8 +68,8 @@ System Requirements
 -------------------
 • Operating System: Windows 10 or later is required.
 • Microsoft Excel must be installed to view reports.
-• At least 130 MB of available local disk space is recommended:
-    - Data is stored useing client's SQL Server Database.
+• At least 900 MB of available local disk space is recommended:
+    - Data is stored useing client's SQL Server Express Database.
     - Monthly Excel files are created with worksheets by day.
 
 License Activation  
