@@ -30,7 +30,7 @@ Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription:
 [Run]
 ; Install SQL Server Express silently
 Filename: "{tmp}\SQLEXPR_x64_ENU.exe"; \
-    Parameters: "/QS /ACTION=Install /FEATURES=SQLEngine /INSTANCENAME=MYAPP /SQLSVCACCOUNT=""NT AUTHORITY\NETWORK SERVICE"" /TCPENABLED=1 /IACCEPTSQLSERVERLICENSETERMS"; \
+    Parameters: "/QS /ACTION=Install /FEATURES=SQLEngine /INSTANCENAME=ProductionManagerApp /SQLSVCACCOUNT=""NT AUTHORITY\NETWORK SERVICE"" /TCPENABLED=1 /IACCEPTSQLSERVERLICENSETERMS"; \
     StatusMsg: "Installing SQL Server Express..."; \
     Flags: waituntilterminated
 

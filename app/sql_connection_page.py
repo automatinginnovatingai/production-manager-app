@@ -11,14 +11,41 @@ class SQLConnectionFrame(tk.Frame):
     def __init__(self, controller):
         super().__init__(controller)
         self.controller = controller
-
-        # Automatically attempt connection when this frame loads
         self.after(100, self.auto_connect)
 
     def auto_connect(self):
         host = socket.gethostname()
-        instance = "MYAPP"      # Your SQL Express instance name
-        db = "YourDB"           # Your database name
+        instance = "ProductionManagerApp"
+        db = "Production_Manager_App_DB"
+
+        master_conn_str = (
+            f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+            f"SERVER={host}\\{instance};"
+            f"DATABASE=master;"
+            f"Trusted_Connection=yes;"
+            "Encrypt=no;"
+        )
+
+        try:
+            master_conn = pyodbc.connect(master_conn_str)
+            master_cursor = master_conn.cursor()
+        except Exception as e:
+            messagebox.showerror("SQL Error", f"Could not connect to SQL Server master DB:\n{e}")
+            return
+
+        try:
+            master_cursor.execute(f"""
+                IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = '{db}')
+                BEGIN
+                    CREATE DATABASE {db};
+                END
+            """)
+            master_conn.commit()
+        except Exception as e:
+            messagebox.showerror("Database Creation Error", str(e))
+            return
+        finally:
+            master_conn.close()
 
         conn_str = (
             f"DRIVER={{ODBC Driver 18 for SQL Server}};"
@@ -28,15 +55,13 @@ class SQLConnectionFrame(tk.Frame):
             "Encrypt=no;"
         )
 
-        # Step 1 — Connect to SQL Server Express
         try:
             conn = pyodbc.connect(conn_str)
             cursor = conn.cursor()
         except Exception as e:
-            messagebox.showerror("SQL Error", f"Could not connect to SQL Server:\n{e}")
+            messagebox.showerror("SQL Error", f"Could not connect to YourDB:\n{e}")
             return
 
-        # Step 2 — Save SQL info locally (no username/password)
         save_local_activation(
             activation_id=None,
             sql_host=f"{host}\\{instance}",
@@ -45,7 +70,6 @@ class SQLConnectionFrame(tk.Frame):
             sql_pwd=None
         )
 
-        # Step 3 — Ensure schema exists
         try:
             ensure_schema(cursor, conn)
             conn.commit()
@@ -53,7 +77,6 @@ class SQLConnectionFrame(tk.Frame):
             messagebox.showerror("Schema Error", str(e))
             return
 
-        # Step 4 — Register activation
         try:
             cursor.execute(
                 "{CALL register_activation (?, ?, ?, ?)}",
@@ -73,7 +96,6 @@ class SQLConnectionFrame(tk.Frame):
             messagebox.showerror("Activation Error", str(e))
             return
 
-        # Step 5 — Save activation_id
         save_local_activation(
             activation_id,
             f"{host}\\{instance}",
