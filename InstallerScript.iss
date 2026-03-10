@@ -1,9 +1,9 @@
 [Setup]
 AppName=Production Manager App SQL Server Express
-AppVersion=1.0.0
+AppVersion=1.0.1
 DefaultDirName={autopf}\Production Manager App SQL Server Express 
 DefaultGroupName=Production Manager App SQL Server Express 
-OutputBaseFilename=Production_Manager_App_SQL_Server_Express_Installer_v1.0.0
+OutputBaseFilename=Production_Manager_App_SQL_Server_Express_Installer_v1.0.1
 OutputDir=installer_build
 SetupIconFile=photo.ico
 Compression=lzma
