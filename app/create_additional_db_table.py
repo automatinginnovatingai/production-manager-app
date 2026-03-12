@@ -22,7 +22,6 @@ def create_employee_info_table(cursor):
                 Title VARCHAR(255),
                 is_admin INT,
                 is_installer INT,
-                salt VARCHAR(255),
                 failed_attempts INT,
                 time_hashed BIGINT,
                 license_key VARCHAR(255),
@@ -31,7 +30,7 @@ def create_employee_info_table(cursor):
                 pin VARCHAR(255),
                 hire_date DATE,
                 is_active INT NOT NULL DEFAULT 0,
-                plan NVARCHAR(50),
+                subscription_plan NVARCHAR(50),
                 created_at DATETIME2,               
                 company_id UNIQUEIDENTIFIER NOT NULL,
                 FOREIGN KEY (company_id) REFERENCES Companies(company_id)

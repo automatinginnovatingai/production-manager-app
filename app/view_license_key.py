@@ -67,11 +67,11 @@ class ViewLicenseKeyFrame(tk.Frame):
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT username, salt, license_key FROM users")
+        cursor.execute("SELECT username license_key FROM users")
         rows = cursor.fetchall()
         conn.close()
 
-        for stored_username, stored_salt, user_license in rows:
+        for stored_username, user_license in rows:
             if username == stored_username:
                 try:
                     return user_license

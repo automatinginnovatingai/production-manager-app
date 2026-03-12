@@ -255,7 +255,7 @@ class EmployeeDailyWorkFrame(tk.Frame):
         insert_query = """
             INSERT INTO AIAI_Weekly_Payroll (
                 Time, MM_DD_YYYY, Day_of_Week,
-                First_Name, Last_Name, Employee_ID, Salt,
+                First_Name, Last_Name, Employee_ID,
                 Employee_Hours, Employee_Job_Title,
                 Builder, Jobsite, Model_Name, Lot_Number, Block_Number,
                 Material_Used, Material_Used_2, Material_Used_3, Material_Used_4,
@@ -278,7 +278,7 @@ class EmployeeDailyWorkFrame(tk.Frame):
                 ?,?,?,?,?,?,?,?,
                 ?,?,?,?,?,?,?,?,
                 ?,?,?,?,?,?,?,?,
-                ?,?,?,?,?
+                ?,?,?,?
             )
         """
 

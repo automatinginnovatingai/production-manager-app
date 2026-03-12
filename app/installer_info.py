@@ -346,8 +346,8 @@ class InstallerInfoFrame(tk.Frame):
                 INSERT INTO AIAI_Employee_Info
                 (user_key, First_Name, Middle_Name, Last_Name, ID, Email, Employee_Password,
                  Address, Apt_Number, City, State, Zip_Code, Phone_Number, Employee_Username,
-                 Title, is_installer, salt, license_key, verification_key)
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                 Title, is_installer, license_key, verification_key)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                 ''',
                 (
                     user_key,

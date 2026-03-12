@@ -152,3 +152,4 @@ gumroad_license_key.txt
 *.db-shm
 *.db-wal
 gumroad_test_info.txt
+SQLEXPRESS_EXTRACTED

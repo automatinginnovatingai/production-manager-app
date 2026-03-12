@@ -11,23 +11,33 @@ class SQLConnectionFrame(tk.Frame):
     def __init__(self, controller):
         super().__init__(controller)
         self.controller = controller
-        self.after(100, self.auto_connect)
+
+        # Status label for user feedback
+        self.status_label = tk.Label(self, text="", font=("Arial", 12))
+        self.status_label.pack(pady=20)
+
+    def on_show(self):
+        # Show message BEFORE starting heavy SQL work
+        self.status_label.config(
+            text="Please be patient… the database is being created.\nThis may take up to a minute."
+        )
+        self.after(200, self.auto_connect)
 
     def auto_connect(self):
-        host = socket.gethostname()
-        instance = "ProductionManagerApp"
+        host = f"{socket.gethostname()}\\SQLEXPRESS"
         db = "Production_Manager_App_DB"
 
         master_conn_str = (
             f"DRIVER={{ODBC Driver 18 for SQL Server}};"
-            f"SERVER={host}\\{instance};"
+            f"SERVER={host};"
             f"DATABASE=master;"
             f"Trusted_Connection=yes;"
             "Encrypt=no;"
+            "TrustServerCertificate=yes;"
         )
 
         try:
-            master_conn = pyodbc.connect(master_conn_str)
+            master_conn = pyodbc.connect(master_conn_str, autocommit=True)
             master_cursor = master_conn.cursor()
         except Exception as e:
             messagebox.showerror("SQL Error", f"Could not connect to SQL Server master DB:\n{e}")
@@ -49,10 +59,11 @@ class SQLConnectionFrame(tk.Frame):
 
         conn_str = (
             f"DRIVER={{ODBC Driver 18 for SQL Server}};"
-            f"SERVER={host}\\{instance};"
+            f"SERVER={host};"
             f"DATABASE={db};"
             f"Trusted_Connection=yes;"
             "Encrypt=no;"
+            "TrustServerCertificate=yes;"
         )
 
         try:
@@ -64,7 +75,7 @@ class SQLConnectionFrame(tk.Frame):
 
         save_local_activation(
             activation_id=None,
-            sql_host=f"{host}\\{instance}",
+            sql_host=host,
             sql_db=db,
             sql_user=None,
             sql_pwd=None
@@ -98,7 +109,7 @@ class SQLConnectionFrame(tk.Frame):
 
         save_local_activation(
             activation_id,
-            f"{host}\\{instance}",
+            host,
             db,
             None,
             None

@@ -4,6 +4,8 @@ import win32crypt
 
 CONFIG_PATH = r"C:\ProgramData\AIManager\activation.json"
 
+# Fix for PyInstaller: define constant manually
+CRYPTPROTECT_LOCAL_MACHINE = 0x4
 
 def dpapi_encrypt(data: bytes) -> bytes:
     return win32crypt.CryptProtectData(
@@ -12,9 +14,8 @@ def dpapi_encrypt(data: bytes) -> bytes:
         None,
         None,
         None,
-        win32crypt.CRYPTPROTECT_LOCAL_MACHINE
+        CRYPTPROTECT_LOCAL_MACHINE
     )
-
 
 def dpapi_decrypt(data: bytes) -> bytes:
     return win32crypt.CryptUnprotectData(
@@ -24,7 +25,6 @@ def dpapi_decrypt(data: bytes) -> bytes:
         None,
         0
     )[1]
-
 
 def save_local_activation(activation_id, sql_host, sql_db, sql_user, sql_pwd):
     payload = json.dumps({
@@ -40,7 +40,6 @@ def save_local_activation(activation_id, sql_host, sql_db, sql_user, sql_pwd):
     os.makedirs(os.path.dirname(CONFIG_PATH), exist_ok=True)
     with open(CONFIG_PATH, "wb") as f:
         f.write(encrypted)
-
 
 def load_local_activation():
     if not os.path.exists(CONFIG_PATH):

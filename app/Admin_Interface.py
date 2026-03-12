@@ -50,6 +50,7 @@ class AdminInterfaceFrame(tk.Frame):
             ("Upgrade Plan", self.get_upgrade_license_key, "gray", "basic_or_pro"),
             ("Activate Installer", self.get_activate_installer, "orange", "enterprise"),
             ("Transfer Data", self.get_transfer_data, "silver" , "basic"),
+            ("Work Ticket", self.get_work_ticket, "coral", "basic"),
             ("Exit", self.exit_button, "red", "basic")
         ]
 
@@ -170,7 +171,11 @@ class AdminInterfaceFrame(tk.Frame):
 
     def get_transfer_data(self):
         from transfer_data import TransferFrame
-        self.controller.show_frame(TransferFrame) 
+        self.controller.show_frame(TransferFrame)
+
+    def get_work_ticket(self):
+        from work_ticket import EmployeeTicketFrame
+        self.controll.show_frame(EmployeeTicketFrame)    
 
     def exit_button(self):
         self.controller.destroy()

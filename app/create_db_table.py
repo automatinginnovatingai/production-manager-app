@@ -11,7 +11,6 @@ def create_subscription_table(cursor):
                 payment DECIMAL(19,4),
                 status VARCHAR(255),
                 subscription_plan VARCHAR(255),
-                salt VARCHAR(255),
                 plan_id VARCHAR(255),
                 start_date DATETIME2,
                 end_date DATETIME2,
@@ -45,7 +44,6 @@ def add_user_data(cursor):
                 license_key VARCHAR(255) UNIQUE,
                 verification_key VARCHAR(255) UNIQUE,
                 agreed VARCHAR(255),
-                salt VARCHAR(255),
                 hire_date DATE,
                 is_admin VARCHAR(255),
                 employee_id VARCHAR(255),   
@@ -77,7 +75,6 @@ def create_companies_table(cursor):
                 registration_status TEXT DEFAULT 'pending',
                 license_key VARCHAR(255) UNIQUE,
                 verification_key VARCHAR(255) UNIQUE,
-                salt VARCHAR(255),
                 customer_id VARCHAR(255),
                 subscription_plan VARCHAR(255),
                 monthly_fee DECIMAL(18, 2),
@@ -99,7 +96,7 @@ def create_activations_table(cursor):
                 activation_id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
                 gumroad_key_hash VARBINARY(64) NOT NULL,
                 installer_id INT NOT NULL,
-                plan NVARCHAR(50) NOT NULL,
+                subscription_plan NVARCHAR(50) NOT NULL,
                 created_at DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
             );
         END
@@ -124,10 +121,130 @@ def create_admin_activations_table(cursor):
             );
         END
     """)
+
+def create_work_ticket(cursor):
+    cursor.execute('''
+        IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'AIAI_Employee_Work_Ticket')
+        BEGIN
+            CREATE TABLE AIAI_Employee_Work_Ticket (
+                payroll_id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+                Time TIME NOT NULL,
+                MM_DD_YYYY DATETIME2 NOT NULL,
+                Day_of_Week DATETIME2 NOT NULL,
+                Ticket_Numer VARCHAR(255) NOT NULL,   
+                First_Name VARCHAR(255) NOT NULL,
+                Last_Name VARCHAR(255) NOT NULL,
+                Employee_ID INT,
+                Salt VARCHAR(255) NOT NULL,
+                Employee_Hours INT NOT NULL,
+                Employee_Job_Title VARCHAR(255),
+                Builder VARCHAR(255),
+                Jobsite VARCHAR(255),
+                Model_Name VARCHAR(255),
+                Lot_Number INT,
+                Block_Number INT,
+                Material_Used DECIMAL(18,2),
+                Material_Used_2 DECIMAL(18,2),
+                Material_Used_3 DECIMAL(18,2),
+                Material_Used_4 DECIMAL(18,2),
+                Material_Used_5 DECIMAL(18,2),
+                Material_Used_6 DECIMAL(18,2),
+                Material_Used_7 DECIMAL(18,2),
+                R_Value DECIMAL(18,2),
+                R_Value_2 DECIMAL(18,2),
+                R_Value_3 DECIMAL(18,2),
+                R_Value_4 DECIMAL(18,2),
+                R_Value_5 DECIMAL(18,2),
+                R_Value_6 DECIMAL(18,2),
+                R_Value_7 DECIMAL(18,2),
+                Material_Width DECIMAL(18,2),
+                Material_Width_2 DECIMAL(18,2),
+                Material_Width_3 DECIMAL(18,2),
+                Material_Width_4 DECIMAL(18,2),
+                Material_Width_5 DECIMAL(18,2),
+                Material_Width_6 DECIMAL(18,2),
+                Material_Width_7 DECIMAL(18,2),
+                Sqft_Bags DECIMAL(18,2),
+                Sqft_Bags_2 DECIMAL(18,2),
+                Sqft_Bags_3 DECIMAL(18,2),
+                Sqft_Bags_4 DECIMAL(18,2),
+                Sqft_Bags_5 DECIMAL(18,2),
+                Sqft_Bags_6 DECIMAL(18,2),
+                Sqft_Bags_7 DECIMAL(18,2),
+                Pay_Per_Tube_Piece_Rate DECIMAL(18,2),
+                Pay_Per_Tube_Piece_Rate_2 DECIMAL(18,2),
+                Pay_Per_Tube_Piece_Rate_3 DECIMAL(18,2),
+                Pay_Per_Tube_Piece_Rate_4 DECIMAL(18,2),
+                Pay_Per_Tube_Piece_Rate_5 DECIMAL(18,2),
+                Pay_Per_Tube_Piece_Rate_6 DECIMAL(18,2),
+                Pay_Per_Tube_Piece_Rate_7 DECIMAL(18,2),
+                Pay DECIMAL(18,2),
+                Pay_2 DECIMAL(18,2),
+                Pay_3 DECIMAL(18,2),
+                Pay_4 DECIMAL(18,2),
+                Pay_5 DECIMAL(18,2),
+                Pay_6 DECIMAL(18,2),
+                Pay_7 DECIMAL(18,2),
+                total_pay DECIMAL(18,2),
+                Pay_Per_Employee DECIMAL(18,2),
+                Split_Pay_Per_Employee DECIMAL(18,2),
+                company_id UNIQUEIDENTIFIER NOT NULL,
+                FOREIGN KEY (company_id) REFERENCES Companies(company_id)
+            )
+        END
+    ''')
+
+def create_register_activation_procedure(cursor):
+    # Drop old version if it exists
+    cursor.execute("""
+        IF EXISTS (
+            SELECT * FROM sys.objects 
+            WHERE type = 'P' AND name = 'register_activation'
+        )
+        DROP PROCEDURE register_activation;
+    """)
+
+    # Create fresh version
+    cursor.execute("""
+        EXEC('
+            CREATE PROCEDURE register_activation
+                @license_key NVARCHAR(255),
+                @installer_id INT,
+                @subscription_plan NVARCHAR(50),
+                @activation_id UNIQUEIDENTIFIER OUTPUT
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                DECLARE @new_id UNIQUEIDENTIFIER = NEWID();
+
+                INSERT INTO activations (
+                    activation_id,
+                    gumroad_key_hash,
+                    installer_id,
+                    subscription_plan
+                )
+                VALUES (
+                    @new_id,
+                    HASHBYTES(''SHA2_256'', @license_key),
+                    @installer_id,
+                    @subscription_plan
+                );
+
+                SET @activation_id = @new_id;
+
+                -- Return a row so Python can fetch it
+                SELECT @activation_id AS activation_id;
+            END
+        ')
+    """)
+
 def initialize_database(cursor, conn):
     create_companies_table(cursor)
     add_user_data(cursor)
     create_subscription_table(cursor)
     create_activations_table(cursor)
     create_admin_activations_table(cursor)
+    create_work_ticket(cursor)
+    create_register_activation_procedure(cursor)
     conn.commit()

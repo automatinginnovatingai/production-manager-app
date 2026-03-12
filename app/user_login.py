@@ -6,7 +6,6 @@ from db_connection import get_db_connection
 from session_context import set_user, normalize_flag
 from path_utils import verify_password
 
-
 class UserLoginFrame(tk.Frame):
     def __init__(self, controller):
         super().__init__(controller)
@@ -122,14 +121,14 @@ class UserLoginFrame(tk.Frame):
         cursor = cnxn.cursor()
 
         cursor.execute("""
-            SELECT username, salt, password, agreed, failed_attempts, time_hashed,
+            SELECT username, password, agreed, failed_attempts, time_hashed,
                    user_key, company_name, is_admin, mac_id_check
             FROM users
         """)
 
         found = None
         for row in cursor.fetchall():
-            db_user, salt, db_pw, agreed, fails, time_hash, user_key, company_name, is_admin, mac_id = row
+            db_user, db_pw, agreed, fails, time_hash, user_key, company_name, is_admin, mac_id = row
             if username == db_user:
                 found = row
                 break
@@ -139,7 +138,7 @@ class UserLoginFrame(tk.Frame):
             messagebox.showerror("Error", "Username not found.")
             return
 
-        db_user, salt, stored_pw, agreed, fails, time_hash, user_key, company_name, is_admin, mac_id = found
+        db_user, stored_pw, agreed, fails, time_hash, user_key, company_name, is_admin, mac_id = found
         now = int(time.time())
 
         # ---------------------------------------------------------
@@ -207,7 +206,6 @@ class UserLoginFrame(tk.Frame):
         set_user(
             username,
             user_key,
-            salt,
             company_name,
             "Yes" if normalize_flag(is_admin) else "No",
             None,
