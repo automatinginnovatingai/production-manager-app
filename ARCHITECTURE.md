@@ -6,7 +6,7 @@ Overview:
 ---------
 The Production Manager App is a closed-source Windows `.exe` application designed for offline use,
 with secure license enforcement and automated Excel reporting. It does not rely on cloud services
-or persistent backend sessions.
+or persistent backend sessions. A simple, small‑business‑friendly Operational CRM that streamlines customer management, improves workflow efficiency, and eliminates the complexity of traditional cloud‑based systems.
 
 Architecture:
 -------------
