@@ -51,6 +51,7 @@ class AdminInterfaceFrame(tk.Frame):
             ("Activate Installer", self.get_activate_installer, "orange", "enterprise"),
             ("Transfer Data", self.get_transfer_data, "silver" , "basic"),
             ("Work Ticket", self.get_work_ticket, "coral", "basic"),
+            ("Daily Schedule", self.get_schedule, "olive", "basic"),
             ("Exit", self.exit_button, "red", "basic")
         ]
 
@@ -175,7 +176,11 @@ class AdminInterfaceFrame(tk.Frame):
 
     def get_work_ticket(self):
         from work_ticket import EmployeeTicketFrame
-        self.controll.show_frame(EmployeeTicketFrame)    
+        self.controll.show_frame(EmployeeTicketFrame)
+
+    def get_schedule(self):
+        from daily_schedule import EmployeeTicketFrame
+        self.controller.show_frame(EmployeeTicketFrame)
 
     def exit_button(self):
         self.controller.destroy()

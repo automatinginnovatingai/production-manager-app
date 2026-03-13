@@ -17,7 +17,7 @@ class EmployeeTicketFrame(tk.Frame):
         super().__init__(controller)
         self.controller = controller
 
-        controller.title("Automating Innovating AI - Employee Daily Work Schedule")
+        controller.title("Automating Innovating AI - Employee Daily Work Schedule Ticket")
 
         # --------------------------------------------------------------
         # MAIN FRAME
@@ -31,7 +31,7 @@ class EmployeeTicketFrame(tk.Frame):
         # --------------------------------------------------------------
         # EMPLOYEE INFO SECTION
         # --------------------------------------------------------------
-        user_info_frame = tk.LabelFrame(frame, text="Employee Daily Work Schedule", font="bold")
+        user_info_frame = tk.LabelFrame(frame, text="Employee Daily Work Schedule Ticket", font="bold")
         user_info_frame.grid(row=0, column=0, padx=40, pady=20, sticky="nsew")
         for c in range(5):
             user_info_frame.grid_columnconfigure(c, weight=1)
@@ -372,7 +372,7 @@ class EmployeeTicketFrame(tk.Frame):
         day_str = calendar.day_name[now.weekday()]
 
         lines = []
-        lines.append("AUTOMATING INNOVATING AI - EMPLOYEE DAILY WORK SCHEDULE")
+        lines.append("AUTOMATING INNOVATING AI - EMPLOYEE DAILY WORK SCHEDULE TICKET")
         lines.append("-" * 80)
         lines.append(f"Time: {time_str}")
         lines.append(f"Date: {date_str}")
