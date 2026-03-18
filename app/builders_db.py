@@ -52,7 +52,7 @@ class BuildersDBFrame(tk.Frame):
 
         # Ensure SQL Server is configured BEFORE loading table
         try:
-            conn, cursor = get_db_connection()
+            conn = get_db_connection()
             conn.close()
         except Exception:
             messagebox.showerror("Database Error", "Could not connect to database.")

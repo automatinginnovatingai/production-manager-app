@@ -2,7 +2,7 @@ import os
 import json
 import win32crypt
 
-CONFIG_PATH = r"C:\ProgramData\AIManager\activation.json"
+CONFIG_PATH = r"C:\ProgramData\ProductionManagerApp\activation.json"
 
 # Fix for PyInstaller: define constant manually
 CRYPTPROTECT_LOCAL_MACHINE = 0x4

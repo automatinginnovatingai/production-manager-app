@@ -12,21 +12,57 @@ class SQLConnectionFrame(tk.Frame):
         super().__init__(controller)
         self.controller = controller
 
-        # Status label for user feedback
         self.status_label = tk.Label(self, text="", font=("Arial", 12))
         self.status_label.pack(pady=20)
 
     def on_show(self):
-        # Show message BEFORE starting heavy SQL work
         self.status_label.config(
             text="Please be patient… the database is being created.\nThis may take up to a minute."
         )
         self.after(200, self.auto_connect)
 
+    def get_express_server_candidates(self):
+        machine = socket.gethostname()
+        return [
+            f"{machine}\\SQLEXPRESS",   # primary, most correct
+            r"(local)\SQLEXPRESS",
+            r".\SQLEXPRESS",
+            r"localhost\SQLEXPRESS",
+        ]
+
+    def find_working_server(self):
+        for candidate in self.get_express_server_candidates():
+            test_str = (
+                f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+                f"SERVER={candidate};"
+                f"DATABASE=master;"
+                f"Trusted_Connection=yes;"
+                "Encrypt=no;"
+                "TrustServerCertificate=yes;"
+            )
+            try:
+                pyodbc.connect(test_str, timeout=3)
+                return candidate
+            except Exception as e:
+                print(f"FAILED: {candidate} → {e}")
+                continue
+
+        return None
+
     def auto_connect(self):
-        host = f"{socket.gethostname()}\\SQLEXPRESS"
         db = "Production_Manager_App_DB"
 
+        # Find a working SQL Express server
+        host = self.find_working_server()
+        if host is None:
+            messagebox.showerror(
+                "SQL Error",
+                "Could not connect to SQL Server Express.\n"
+                "Ensure SQL Server Express is installed and running."
+            )
+            return
+
+        # Connect to master to create DB if needed
         master_conn_str = (
             f"DRIVER={{ODBC Driver 18 for SQL Server}};"
             f"SERVER={host};"
@@ -57,6 +93,7 @@ class SQLConnectionFrame(tk.Frame):
         finally:
             master_conn.close()
 
+        # Connect to the actual app DB
         conn_str = (
             f"DRIVER={{ODBC Driver 18 for SQL Server}};"
             f"SERVER={host};"
@@ -70,9 +107,10 @@ class SQLConnectionFrame(tk.Frame):
             conn = pyodbc.connect(conn_str)
             cursor = conn.cursor()
         except Exception as e:
-            messagebox.showerror("SQL Error", f"Could not connect to YourDB:\n{e}")
+            messagebox.showerror("SQL Error", f"Could not connect to {db}:\n{e}")
             return
 
+        # Save activation with Windows Auth
         save_local_activation(
             activation_id=None,
             sql_host=host,
@@ -81,6 +119,7 @@ class SQLConnectionFrame(tk.Frame):
             sql_pwd=None
         )
 
+        # Ensure schema exists
         try:
             ensure_schema(cursor, conn)
             conn.commit()
@@ -88,6 +127,7 @@ class SQLConnectionFrame(tk.Frame):
             messagebox.showerror("Schema Error", str(e))
             return
 
+        # Register activation
         try:
             cursor.execute(
                 "{CALL register_activation (?, ?, ?, ?)}",
@@ -107,6 +147,7 @@ class SQLConnectionFrame(tk.Frame):
             messagebox.showerror("Activation Error", str(e))
             return
 
+        # Save final activation
         save_local_activation(
             activation_id,
             host,

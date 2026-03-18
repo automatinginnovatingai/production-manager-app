@@ -39,6 +39,7 @@ def add_user_data(cursor):
                 middle_name VARCHAR(255),      
                 last_name VARCHAR(255),
                 phone_number VARCHAR(255) UNIQUE,
+                company_name VARCHAR(255),   
                 email VARCHAR(255) UNIQUE,
                 pin VARCHAR(255),   
                 license_key VARCHAR(255) UNIQUE,
@@ -48,9 +49,7 @@ def add_user_data(cursor):
                 is_admin VARCHAR(255),
                 employee_id VARCHAR(255),   
                 failed_attempts INT,
-                time_hashed BIGINT,
-                company_id UNIQUEIDENTIFIER NOT NULL,                  
-                FOREIGN KEY (company_id) REFERENCES companies(company_id)
+                time_hashed BIGINT
             )
         END
     ''')
@@ -131,7 +130,7 @@ def create_work_ticket(cursor):
                 Time TIME NOT NULL,
                 MM_DD_YYYY DATETIME2 NOT NULL,
                 Day_of_Week DATETIME2 NOT NULL,
-                Ticket_Numer VARCHAR(255) NOT NULL,   
+                Ticket_Number VARCHAR(255) NOT NULL,   
                 First_Name VARCHAR(255) NOT NULL,
                 Last_Name VARCHAR(255) NOT NULL,
                 Employee_ID INT,
@@ -187,57 +186,10 @@ def create_work_ticket(cursor):
                 Pay_7 DECIMAL(18,2),
                 total_pay DECIMAL(18,2),
                 Pay_Per_Employee DECIMAL(18,2),
-                Split_Pay_Per_Employee DECIMAL(18,2),
-                company_id UNIQUEIDENTIFIER NOT NULL,
-                FOREIGN KEY (company_id) REFERENCES Companies(company_id)
+                Split_Pay_Per_Employee DECIMAL(18,2)
             )
         END
     ''')
-
-def create_register_activation_procedure(cursor):
-    # Drop old version if it exists
-    cursor.execute("""
-        IF EXISTS (
-            SELECT * FROM sys.objects 
-            WHERE type = 'P' AND name = 'register_activation'
-        )
-        DROP PROCEDURE register_activation;
-    """)
-
-    # Create fresh version
-    cursor.execute("""
-        EXEC('
-            CREATE PROCEDURE register_activation
-                @license_key NVARCHAR(255),
-                @installer_id INT,
-                @subscription_plan NVARCHAR(50),
-                @activation_id UNIQUEIDENTIFIER OUTPUT
-            AS
-            BEGIN
-                SET NOCOUNT ON;
-
-                DECLARE @new_id UNIQUEIDENTIFIER = NEWID();
-
-                INSERT INTO activations (
-                    activation_id,
-                    gumroad_key_hash,
-                    installer_id,
-                    subscription_plan
-                )
-                VALUES (
-                    @new_id,
-                    HASHBYTES(''SHA2_256'', @license_key),
-                    @installer_id,
-                    @subscription_plan
-                );
-
-                SET @activation_id = @new_id;
-
-                -- Return a row so Python can fetch it
-                SELECT @activation_id AS activation_id;
-            END
-        ')
-    """)
 
 def initialize_database(cursor, conn):
     create_companies_table(cursor)
@@ -246,5 +198,4 @@ def initialize_database(cursor, conn):
     create_activations_table(cursor)
     create_admin_activations_table(cursor)
     create_work_ticket(cursor)
-    create_register_activation_procedure(cursor)
     conn.commit()
