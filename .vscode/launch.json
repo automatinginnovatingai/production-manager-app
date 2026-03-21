@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run App",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/app/entry_point.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/venv/Scripts/python.exe"
+        }
+    ]
+}

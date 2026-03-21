@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 import requests
 import webbrowser
+import winreg
 
 PRODUCT_ID = "f2rOQz_MvWMUUkcQYFVaFw=="
 
@@ -44,6 +45,21 @@ def normalize_gumroad_variant(raw_variant, fallback_plan):
 
     return fallback_plan
 
+def get_db_mode_from_registry() -> bool:
+    """
+    Returns True if installer selected SQL Express.
+    Returns False if installer selected SQL Server.
+    """
+    try:
+        key = winreg.OpenKey(
+            winreg.HKEY_LOCAL_MACHINE,
+            r"Software\ProductionManagerApp"
+        )
+        value, _ = winreg.QueryValueEx(key, "UseSQLExpress")
+        return value == "1"
+    except Exception:
+        return True  
+
 
 class LicensePageFrame(tk.Frame):
     def __init__(self, controller):
@@ -61,7 +77,7 @@ class LicensePageFrame(tk.Frame):
         self.entry.pack(pady=5)
 
         welcome_text = (
-            "Welcome to the Automating Innovating AI Production Manager App SQL Server Express Version!\n\n"
+            "Welcome to the Automating Innovating AI Production Manager App!\n\n"
             "Please enter the Gumroad license key you received after purchase.\n"
             "You’ll find it on the Gumroad receipt and confirmation email.\n\n"
             "If you do not have a license key, click the button below to purchase one.\n\n"
@@ -124,8 +140,14 @@ class LicensePageFrame(tk.Frame):
     # Navigation Helpers
     # -----------------------------
     def _go_to_sql_connection(self):
-        from sql_connection_page import SQLConnectionFrame
-        self.controller.show_frame(SQLConnectionFrame)
+        use_express = get_db_mode_from_registry()
+
+        if use_express:
+            from sql_connection_page import SQLConnectionFrame
+            self.controller.show_frame(SQLConnectionFrame)
+        else:
+            from sql_server_connection_page import SQLServerConnectionFrame
+            self.controller.show_frame(SQLServerConnectionFrame)
 
     def _go_to_start_page(self):
         from startup_page import StartPageFrame

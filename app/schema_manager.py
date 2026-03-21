@@ -28,9 +28,7 @@ def ensure_schema(cursor, conn):
         conn.commit()
 
     else:
-        # Schema already exists — but stored procedures may not.
-        # Always ensure stored procedures are created.
-        from create_db_table import create_register_activation_procedure
-        create_register_activation_procedure(cursor)
-
+        # Schema exists — refresh stored procedures only
+        from create_additional_db_table import initialize_all_tables
+        initialize_all_tables(cursor, conn)
         conn.commit()

@@ -8,7 +8,7 @@ from tkinter import messagebox
 
 # === Configuration ===
 VERSION_FILE = "version_info.json"
-VERSION_URL = "https://raw.githubusercontent.com/automatinginnovatingai/production-manager-app-sql-server-express/master/version_info.json"
+VERSION_URL = "https://raw.githubusercontent.com/automatinginnovatingai/production-manager-app/master/version_info.json"
 
 # The folder where your app lives
 BASE_DIR = os.path.join(os.getcwd(), "app")
@@ -24,7 +24,7 @@ def get_current_version():
     try:
         with open(VERSION_FILE, "r") as f:
             data = json.load(f)
-            return data.get("sql_server_express", {}).get("version", "0.0.0")
+            return data.get("production_manager_app", {}).get("version", "0.0.0")
     except FileNotFoundError:
         return "0.0.0"
 
@@ -34,7 +34,7 @@ def get_latest_version():
         r = requests.get(VERSION_URL, timeout=5)
         r.raise_for_status()
         data = r.json()
-        return data["sql_server_express"]["version"], data["sql_server_express"]["url"]
+        return data["production_manager_app"]["version"], data["production_manager_app"]["url"]
     except Exception as e:
         messagebox.showerror("Version Check Failed", str(e))
         return None, None
@@ -58,7 +58,7 @@ def rollback_update():
 
 
 def download_update(url):
-    zip_name = "sql_server_express_update.zip"
+    zip_name = "production_manager_app_update.zip"
     try:
         r = requests.get(url, stream=True, timeout=10)
         r.raise_for_status()
@@ -87,7 +87,7 @@ def apply_update(version_str, url):
 
         # Save new version
         with open(VERSION_FILE, "w") as f:
-            json.dump({"sql_server_express": {"version": version_str}}, f, indent=4)
+            json.dump({"production_manager_app": {"version": version_str}}, f, indent=4)
 
         messagebox.showinfo("Update Complete", f"App updated to {version_str}")
         return True
