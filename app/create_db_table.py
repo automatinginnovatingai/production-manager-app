@@ -191,6 +191,45 @@ def create_work_ticket(cursor):
         END
     ''')
 
+def create_register_activation_procedure(cursor):
+    # Drop old version if it exists
+    cursor.execute("""
+        IF OBJECT_ID('register_activation', 'P') IS NOT NULL
+            DROP PROCEDURE register_activation;
+    """)
+
+    # Create fresh version
+    cursor.execute("""
+        CREATE PROCEDURE register_activation
+            @license_key NVARCHAR(255),
+            @installer_id INT,
+            @subscription_plan NVARCHAR(50),
+            @activation_id UNIQUEIDENTIFIER OUTPUT
+        AS
+        BEGIN
+            SET NOCOUNT ON;
+
+            DECLARE @new_id UNIQUEIDENTIFIER = NEWID();
+
+            INSERT INTO activations (
+                activation_id,
+                gumroad_key_hash,
+                installer_id,
+                subscription_plan
+            )
+            VALUES (
+                @new_id,
+                HASHBYTES('SHA2_256', @license_key),
+                @installer_id,
+                @subscription_plan
+            );
+
+            SET @activation_id = @new_id;
+
+            SELECT @activation_id AS activation_id;
+        END
+    """)
+
 def initialize_database(cursor, conn):
     create_companies_table(cursor)
     add_user_data(cursor)
@@ -198,4 +237,5 @@ def initialize_database(cursor, conn):
     create_activations_table(cursor)
     create_admin_activations_table(cursor)
     create_work_ticket(cursor)
+    create_register_activation_procedure(cursor)
     conn.commit()

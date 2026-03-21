@@ -7,6 +7,7 @@ import winreg
 
 PRODUCT_ID = "f2rOQz_MvWMUUkcQYFVaFw=="
 
+
 def gumroad_verify(license_key: str) -> dict | None:
     url = "https://api.gumroad.com/v2/licenses/verify"
     payload = {
@@ -45,28 +46,41 @@ def normalize_gumroad_variant(raw_variant, fallback_plan):
 
     return fallback_plan
 
+
+# -------------------------------------------------------------------
+# FIXED: Registry lookup now safe, creates key/value if missing
+# -------------------------------------------------------------------
 def get_db_mode_from_registry() -> bool:
     """
     Returns True if installer selected SQL Express.
     Returns False if installer selected SQL Server.
+    Uses HKCU so no admin rights are required.
     """
-    try:
-        key = winreg.OpenKey(
-            winreg.HKEY_LOCAL_MACHINE,
-            r"Software\ProductionManagerApp"
-        )
-        value, _ = winreg.QueryValueEx(key, "UseSQLExpress")
-        return value == "1"
-    except Exception:
-        return True  
+    path = r"Software\ProductionManagerApp"
+    value_name = "UseSQLExpress"
+    root = winreg.HKEY_CURRENT_USER  # FIXED
 
+    try:
+        key = winreg.OpenKey(root, path)
+    except FileNotFoundError:
+        # Create key under HKCU
+        key = winreg.CreateKey(root, path)
+        winreg.SetValueEx(key, value_name, 0, winreg.REG_SZ, "1")
+        return True
+
+    try:
+        value, _ = winreg.QueryValueEx(key, value_name)
+        return value == "1"
+    except FileNotFoundError:
+        winreg.SetValueEx(key, value_name, 0, winreg.REG_SZ, "1")
+        return True
 
 class LicensePageFrame(tk.Frame):
     def __init__(self, controller):
         super().__init__(controller)
         self.controller = controller
         self.build_activation_ui()
-        
+
     # -----------------------------
     # UI
     # -----------------------------

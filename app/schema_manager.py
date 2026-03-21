@@ -1,4 +1,15 @@
+# schema_manager.py
+
+from create_db_table import initialize_database
+from create_additional_db_table import initialize_all_tables
+
+
 def ensure_schema(cursor, conn):
+    """
+    Ensures the database schema exists and is up to date.
+    This version avoids dynamic imports so PyInstaller bundles all modules correctly.
+    """
+
     # Check if schema_version table exists
     cursor.execute("""
         SELECT COUNT(*)
@@ -15,10 +26,6 @@ def ensure_schema(cursor, conn):
             );
         """)
 
-        # Import schema creation modules
-        from create_db_table import initialize_database
-        from create_additional_db_table import initialize_all_tables
-
         # Run full schema initialization (tables + procedures)
         initialize_database(cursor, conn)
         initialize_all_tables(cursor, conn)
@@ -29,6 +36,5 @@ def ensure_schema(cursor, conn):
 
     else:
         # Schema exists — refresh stored procedures only
-        from create_additional_db_table import initialize_all_tables
         initialize_all_tables(cursor, conn)
         conn.commit()

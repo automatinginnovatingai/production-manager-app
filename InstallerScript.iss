@@ -4,7 +4,7 @@
 AppName=Production Manager App
 AppVersion=1.0.0
 DefaultDirName={autopf}\Production Manager App
-DefaultGroupName=Production Manager App SQL Server Express
+DefaultGroupName=Production Manager App
 OutputBaseFilename=Production_Manager_App_Installer_v1.0.0
 OutputDir=installer_build
 SetupIconFile=photo.ico
@@ -38,14 +38,14 @@ begin
 
   RB_SQLExpress := TNewRadioButton.Create(DBPage);
   RB_SQLExpress.Parent := DBPage.Surface;
-  RB_SQLExpress.Caption := 'SQL Express (recommended for small companies)';
+  RB_SQLExpress.Caption := 'SQL Express';
   RB_SQLExpress.Checked := True;
   RB_SQLExpress.Top := LabelDB.Top + ScaleY(24);
   RB_SQLExpress.Left := ScaleX(16);
 
   RB_SQLServer := TNewRadioButton.Create(DBPage);
   RB_SQLServer.Parent := DBPage.Surface;
-  RB_SQLServer.Caption := 'SQL Server (for companies with a dedicated server)';
+  RB_SQLServer.Caption := 'SQL Server';
   RB_SQLServer.Top := RB_SQLExpress.Top + ScaleY(24);
   RB_SQLServer.Left := ScaleX(16);
 end;

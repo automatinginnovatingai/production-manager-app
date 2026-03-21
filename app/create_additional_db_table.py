@@ -1,4 +1,5 @@
-#Additional Database Tables Created    
+# Additional Database Tables Created    
+
 def create_employee_info_table(cursor):
     cursor.execute('''
         IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'AIAI_Employee_Info')
@@ -31,10 +32,7 @@ def create_employee_info_table(cursor):
                 hire_date DATE,
                 is_active INT NOT NULL DEFAULT 0,
                 subscription_plan NVARCHAR(50),
-                created_at DATETIME2,               
-                company_id UNIQUEIDENTIFIER NOT NULL,
-                FOREIGN KEY (company_id) REFERENCES Companies(company_id)
-                
+                created_at DATETIME2                
             )
         END
     ''')
@@ -60,9 +58,7 @@ def create_builders_table(cursor):
                 garage_ceiling_sq_footage VARCHAR(255),
                 garage_wall_sq_footage VARCHAR(255),
                 int_wall_sq_footage VARCHAR(255),
-                miscellaneous_info VARCHAR(MAX),
-                company_id UNIQUEIDENTIFIER NOT NULL,
-                FOREIGN KEY (company_id) REFERENCES Companies(company_id)
+                miscellaneous_info VARCHAR(MAX)
             )
         END
     ''')
@@ -131,12 +127,11 @@ def create_weekly_payroll_table(cursor):
                 Pay_7 DECIMAL(18,2),
                 total_pay DECIMAL(18,2),
                 Pay_Per_Employee DECIMAL(18,2),
-                Split_Pay_Per_Employee DECIMAL(18,2),
-                company_id UNIQUEIDENTIFIER NOT NULL,
-                FOREIGN KEY (company_id) REFERENCES Companies(company_id)
+                Split_Pay_Per_Employee DECIMAL(18,2)
             )
         END
     ''')
+
 def create_material_info_table(cursor):
     cursor.execute('''
         IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'AIAI_Material_Info')
@@ -148,9 +143,7 @@ def create_material_info_table(cursor):
                 material_r_value VARCHAR(255),
                 material_width INT,
                 square_footage INT,
-                pay_rate DECIMAL(18,2),
-                company_id UNIQUEIDENTIFIER NOT NULL,
-                FOREIGN KEY (company_id) REFERENCES Companies(company_id)
+                pay_rate DECIMAL(18,2)
             )
         END
     ''')
@@ -219,34 +212,28 @@ def create_employee_weekly_payroll_table(cursor):
                 Pay_7 DECIMAL(18,2),
                 total_pay DECIMAL(18,2),
                 Pay_Per_Employee DECIMAL(18,2),
-                Split_Pay_Per_Employee DECIMAL(18,2),
-                company_id UNIQUEIDENTIFIER NOT NULL,
-                FOREIGN KEY (company_id) REFERENCES Companies(company_id)
+                Split_Pay_Per_Employee DECIMAL(18,2)
             )
         END
     ''')
 
 def create_pay_week_schedule_table(cursor):
     cursor.execute('''
-        IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'AIAI_Employee_Weekly_Payroll')
+        IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'pay_week')
         BEGIN
-            CREATE TABLE pay_week
-               id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-               start_day DATETIME2,
-               end_day DATETIME2, 
-               company_id UNIQUEIDENTIFIER NOT NULL,
-               FOREIGN KEY (company_id) REFERENCES Companies(company_id)
+            CREATE TABLE pay_week (
+                id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+                start_day DATETIME2,
+                end_day DATETIME2
             )
         END
     ''')
-def initialize_all_tables(cursor, conn):
-        create_employee_info_table(cursor)
-        create_builders_table(cursor)
-        create_weekly_payroll_table(cursor)
-        create_material_info_table(cursor)
-        create_employee_weekly_payroll_table(cursor)
-        create_pay_week_schedule_table(cursor)
-        conn.commit()
-       
-            
 
+def initialize_all_tables(cursor, conn):
+    create_employee_info_table(cursor)
+    create_builders_table(cursor)
+    create_weekly_payroll_table(cursor)
+    create_material_info_table(cursor)
+    create_employee_weekly_payroll_table(cursor)
+    create_pay_week_schedule_table(cursor)
+    conn.commit()

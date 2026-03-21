@@ -33,7 +33,7 @@ class PMMSplashFrame(tk.Frame):
                                 highlightthickness=0, bd=0)
         self.canvas.pack(fill="both", expand=True)
 
-        image_path = resource_path("app/aiai_photo.jpg")
+        image_path = resource_path("tools/automating_innovating_ai_photo.jpg")
         image = Image.open(image_path)
 
         # KEEP A STRONG REFERENCE
