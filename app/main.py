@@ -9,10 +9,6 @@ def run_license_logic_sql(app):
 def main():
     app = App()
 
-    # Register frames
-    app.add_frame(PMMSplashFrame)
-    app.add_frame(LicensePageFrame)
-
     # Show splash FIRST
     app.show_frame(PMMSplashFrame)
 
