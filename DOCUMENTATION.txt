@@ -1,2 +1,4 @@
-Documentation for the Production Manager App — a closed-source Windows .exe  for offline payroll, job tracking, 
-and Excel exports. Includes architecture overview, license model, and version breakdown (Basic, Pro, Enterprise).
+Documentation for the Production Manager App 
+— a closed‑source Windows .exe designed for offline job tracking, payroll calculation, SQL Express/SQL Server data storage, 
+and automated Excel reporting. This document includes the full architecture overview, installer‑driven database model, license validation
+flow, update system, data‑transfer process, and feature tier breakdown (Basic, Pro, Enterprise).
