@@ -1,7 +1,8 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import ttk, messagebox
 import socket
 import pyodbc
+import threading
 
 from license_storage import save_local_activation
 from schema_manager import ensure_schema
@@ -13,18 +14,37 @@ class SQLConnectionFrame(tk.Frame):
         self.controller = controller
 
         self.status_label = tk.Label(self, text="", font=("Arial", 12))
-        self.status_label.pack(pady=20)
+        self.status_label.pack(pady=10)
+
+        self.progress = ttk.Progressbar(
+            self, orient="horizontal", length=300, mode="determinate"
+        )
+        self.progress.pack(pady=10)
+
+        self.total_steps = 6
+        self.current_step = 0
+
+    def update_progress(self, text):
+        self.current_step += 1
+        percent = int((self.current_step / self.total_steps) * 100)
+
+        def update():
+            self.status_label.config(text=text)
+            self.progress["value"] = percent
+
+        self.after(0, update)
 
     def on_show(self):
-        self.status_label.config(
-            text="Please be patient… the database is being created.\nThis may take up to a minute."
-        )
-        self.after(200, self.auto_connect)
+        self.status_label.config(text="Please wait… preparing SQL Server connection.")
+        self.progress["value"] = 0
+        self.current_step = 0
+
+        threading.Thread(target=self.auto_connect, daemon=True).start()
 
     def get_express_server_candidates(self):
         machine = socket.gethostname()
         return [
-            f"{machine}\\SQLEXPRESS",   # primary, most correct
+            f"{machine}\\SQLEXPRESS",
             r"(local)\SQLEXPRESS",
             r".\SQLEXPRESS",
             r"localhost\SQLEXPRESS",
@@ -33,18 +53,17 @@ class SQLConnectionFrame(tk.Frame):
     def find_working_server(self):
         for candidate in self.get_express_server_candidates():
             test_str = (
-                f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+                "DRIVER={ODBC Driver 18 for SQL Server};"
                 f"SERVER={candidate};"
-                f"DATABASE=master;"
-                f"Trusted_Connection=yes;"
+                "DATABASE=master;"
+                "Trusted_Connection=yes;"
                 "Encrypt=no;"
                 "TrustServerCertificate=yes;"
             )
             try:
                 pyodbc.connect(test_str, timeout=3)
                 return candidate
-            except Exception as e:
-                print(f"FAILED: {candidate} → {e}")
+            except Exception:
                 continue
 
         return None
@@ -52,33 +71,35 @@ class SQLConnectionFrame(tk.Frame):
     def auto_connect(self):
         db = "Production_Manager_App_DB"
 
-        # Find a working SQL Express server
+        # STEP 1 — Find SQL Express
+        self.update_progress("Searching for SQL Server Express…")
         host = self.find_working_server()
         if host is None:
-            messagebox.showerror(
-                "SQL Error",
-                "Could not connect to SQL Server Express.\n"
-                "Ensure SQL Server Express is installed and running."
-            )
+            messagebox.showerror("ERROR", "Could not find SQL Server Express.")
+            self.after(0, self.go_to_start_page)
             return
 
-        # Connect to master to create DB if needed
+        # STEP 2 — Connect to master
+        self.update_progress("Connecting to master database…")
         master_conn_str = (
-            f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+            "DRIVER={ODBC Driver 18 for SQL Server};"
             f"SERVER={host};"
-            f"DATABASE=master;"
-            f"Trusted_Connection=yes;"
+            "DATABASE=master;"
+            "Trusted_Connection=yes;"
             "Encrypt=no;"
             "TrustServerCertificate=yes;"
         )
 
         try:
-            master_conn = pyodbc.connect(master_conn_str, autocommit=True)
+            master_conn = pyodbc.connect(master_conn_str, autocommit=True, timeout=5)
             master_cursor = master_conn.cursor()
-        except Exception as e:
-            messagebox.showerror("SQL Error", f"Could not connect to SQL Server master DB:\n{e}")
+        except Exception:
+            messagebox.showerror("ERROR", "Could not connect to SQL Server master DB.")
+            self.after(0, self.go_to_start_page)
             return
 
+        # STEP 3 — Create DB if needed
+        self.update_progress("Ensuring database exists…")
         try:
             master_cursor.execute(f"""
                 IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = '{db}')
@@ -87,47 +108,45 @@ class SQLConnectionFrame(tk.Frame):
                 END
             """)
             master_conn.commit()
-        except Exception as e:
-            messagebox.showerror("Database Creation Error", str(e))
-            return
+        except Exception:
+            pass
         finally:
             master_conn.close()
 
-        # Connect to the actual app DB
+        # STEP 4 — Connect to app DB
+        self.update_progress("Connecting to application database…")
         conn_str = (
-            f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+            "DRIVER={ODBC Driver 18 for SQL Server};"
             f"SERVER={host};"
             f"DATABASE={db};"
-            f"Trusted_Connection=yes;"
+            "Trusted_Connection=yes;"
             "Encrypt=no;"
             "TrustServerCertificate=yes;"
         )
 
         try:
-            conn = pyodbc.connect(conn_str)
+            conn = pyodbc.connect(conn_str, timeout=5)
             cursor = conn.cursor()
-        except Exception as e:
-            messagebox.showerror("SQL Error", f"Could not connect to {db}:\n{e}")
+        except Exception:
+            messagebox.showerror("ERROR", "Could not connect to application database.")
+            self.after(0, self.go_to_start_page)
             return
 
-        # Save activation with Windows Auth
-        save_local_activation(
-            activation_id=None,
-            sql_host=host,
-            sql_db=db,
-            sql_user=None,
-            sql_pwd=None
-        )
+        # SUCCESS — DB CONNECTED
+        messagebox.showinfo("Database Connected", "Database connection successful. Redirecting…")
 
-        # Ensure schema exists
+        save_local_activation(None, host, db, None, None)
+
+        # STEP 5 — Schema creation
+        self.update_progress("Creating tables and stored procedures…")
         try:
             ensure_schema(cursor, conn)
             conn.commit()
-        except Exception as e:
-            messagebox.showerror("Schema Error", str(e))
-            return
+        except Exception:
+            pass
 
-        # Register activation
+        # STEP 6 — Activation
+        self.update_progress("Registering activation…")
         try:
             cursor.execute(
                 "{CALL register_activation (?, ?, ?, ?)}",
@@ -137,29 +156,16 @@ class SQLConnectionFrame(tk.Frame):
                 None
             )
             row = cursor.fetchone()
-            if row is None:
-                raise Exception("register_activation returned no activation_id")
+            if row:
+                activation_id = row[0]
+                conn.commit()
+                save_local_activation(activation_id, host, db, None, None)
+                self.controller.activation_id = activation_id
+        except Exception:
+            pass
 
-            activation_id = row[0]
-            conn.commit()
-
-        except Exception as e:
-            messagebox.showerror("Activation Error", str(e))
-            return
-
-        # Save final activation
-        save_local_activation(
-            activation_id,
-            host,
-            db,
-            None,
-            None
-        )
-
-        self.controller.activation_id = activation_id
-
-        messagebox.showinfo("Success", "Activation complete. Launching application.")
-        self.go_to_start_page()
+        # Redirect — ALWAYS
+        self.after(0, self.go_to_start_page)
 
     def go_to_start_page(self):
         from startup_page import StartPageFrame

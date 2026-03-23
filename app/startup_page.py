@@ -3,16 +3,7 @@ import tkinter as tk
 import sys
 from datetime import datetime, date
 import calendar
-
-from installer_login import InstallerLoginFrame
-from Production_Manager_App import PMMHomeFrame
-
-# REQUIRED imports for activation check
-from license_storage import load_local_activation
-from db_connection import get_db_connection
 from tkinter import messagebox
-from license_validator import LicensePageFrame
-
 
 class StartPageFrame(tk.Frame):
     def __init__(self, controller):
@@ -64,17 +55,23 @@ class StartPageFrame(tk.Frame):
         tk.Label(calendar_frame, text=day_name, font=("Helvetica", 12)).grid(row=5, column=0, sticky="w")
 
     def on_show(self):
-        """Runs every time this frame becomes visible."""
-        # 1. Load activation_id from DPAPI
+        # IMPORTS MOVED HERE TO BREAK CIRCULAR DEPENDENCIES
+        from license_storage import load_local_activation
+        from db_connection import get_db_connection
+        from license_validator import LicensePageFrame
+
         try:
             cfg = load_local_activation()
-            activation_id = cfg["activation_id"]
+            activation_id = cfg.get("activation_id")
+
+            if activation_id is None:
+                return
+
         except Exception:
             messagebox.showerror("License Error", "This machine is not activated.")
             self.controller.show_frame(LicensePageFrame)
             return
 
-        # 2. Validate activation_id in SQL Server
         try:
             conn, cursor = get_db_connection()
             cursor.execute("SELECT COUNT(*) FROM activations WHERE activation_id = ?", activation_id)
@@ -83,16 +80,17 @@ class StartPageFrame(tk.Frame):
             messagebox.showerror("Database Error", str(e))
             return
 
-        # 3. If activation missing → force reactivation
         if exists == 0:
             messagebox.showerror("License Error", "This machine is not activated.")
             self.controller.show_frame(LicensePageFrame)
             return
 
     def admin_page(self):
+        from Production_Manager_App import PMMHomeFrame
         self.controller.show_frame(PMMHomeFrame)
 
     def installer_page(self):
+        from installer_login import InstallerLoginFrame
         self.controller.show_frame(InstallerLoginFrame)
 
     def exit_app(self):

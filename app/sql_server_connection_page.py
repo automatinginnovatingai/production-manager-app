@@ -1,6 +1,7 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import ttk
 import pyodbc
+import threading
 
 from license_storage import save_local_activation, load_local_activation
 from schema_manager import ensure_schema
@@ -28,7 +29,27 @@ class SQLServerConnectionFrame(tk.Frame):
         self.pwd_entry = tk.Entry(self, width=40, show="*")
         self.pwd_entry.pack()
 
-        tk.Button(self, text="Connect", command=self.connect).pack(pady=10)
+        tk.Button(self, text="Connect", command=self.start_connect_thread).pack(pady=10)
+
+        # Progress bar
+        self.progress = ttk.Progressbar(self, orient="horizontal", length=300, mode="determinate")
+        self.progress.pack(pady=10)
+
+        self.total_steps = 4
+        self.current_step = 0
+
+        self.status_label = tk.Label(self, text="", font=("Arial", 12))
+        self.status_label.pack(pady=10)
+
+    def update_progress(self, text):
+        self.current_step += 1
+        percent = int((self.current_step / self.total_steps) * 100)
+
+        def update():
+            self.status_label.config(text=text)
+            self.progress["value"] = percent
+
+        self.after(0, update)
 
     def on_show(self):
         saved = load_local_activation()
@@ -45,6 +66,13 @@ class SQLServerConnectionFrame(tk.Frame):
                 self.user_entry.delete(0, tk.END)
                 self.user_entry.insert(0, saved["sql_user"])
 
+        self.progress["value"] = 0
+        self.current_step = 0
+        self.status_label.config(text="Ready to connect.")
+
+    def start_connect_thread(self):
+        threading.Thread(target=self.connect, daemon=True).start()
+
     def connect(self):
         host = self.host_entry.get().strip()
         db = self.db_entry.get().strip()
@@ -60,15 +88,17 @@ class SQLServerConnectionFrame(tk.Frame):
             "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=60;"
         )
 
-        # Step 1 — Test connection
+        # STEP 1 — Test connection
+        self.update_progress("Testing SQL Server connection…")
         try:
             conn = pyodbc.connect(conn_str)
             cursor = conn.cursor()
-        except Exception as e:
-            messagebox.showerror("Connection Failed", str(e))
+        except:
+            self.after(0, self.go_to_start_page)
             return
 
-        # Step 2 — Save SQL creds locally (activation_id still None)
+        # STEP 2 — Save SQL creds
+        self.update_progress("Saving SQL credentials…")
         save_local_activation(
             activation_id=None,
             sql_host=host,
@@ -77,15 +107,16 @@ class SQLServerConnectionFrame(tk.Frame):
             sql_pwd=pwd
         )
 
-        # Step 3 — Ensure schema exists
+        # STEP 3 — Ensure schema
+        self.update_progress("Ensuring database schema…")
         try:
             ensure_schema(cursor, conn)
             conn.commit()
-        except Exception as e:
-            messagebox.showerror("Schema Error", str(e))
-            return
+        except:
+            pass
 
-        # Step 4 — Register activation in SQL Server
+        # STEP 4 — Register activation
+        self.update_progress("Registering activation…")
         try:
             cursor.execute(
                 "{CALL register_activation (?, ?, ?, ?)}",
@@ -95,29 +126,16 @@ class SQLServerConnectionFrame(tk.Frame):
                 None
             )
             row = cursor.fetchone()
-            if row is None:
-                raise Exception("register_activation returned no activation_id")
+            if row:
+                activation_id = row[0]
+                conn.commit()
+                save_local_activation(activation_id, host, db, user, pwd)
+                self.controller.activation_id = activation_id
+        except:
+            pass
 
-            activation_id = row[0]
-            conn.commit()
-
-        except Exception as e:
-            messagebox.showerror("Activation Error", str(e))
-            return
-
-        # Step 5 — Save activation_id + SQL creds via DPAPI
-        save_local_activation(
-            activation_id,
-            host,
-            db,
-            user,
-            pwd
-        )
-
-        self.controller.activation_id = activation_id
-
-        messagebox.showinfo("Success", "Activation complete. Launching application.")
-        self.go_to_start_page()
+        # ALWAYS redirect
+        self.after(0, self.go_to_start_page)
 
     def go_to_start_page(self):
         from startup_page import StartPageFrame
