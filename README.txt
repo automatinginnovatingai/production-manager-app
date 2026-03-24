@@ -2,8 +2,53 @@
 
 This repository contains documentation for the Production Manager App — a closed‑source Windows application designed for small to large production teams to manage job entries, payroll, and material usage entirely offline.
 
-The Production Manager App was built to modernize workflows in the construction industry—specifically within fiberglass insulation. After witnessing firsthand how companies rely on paper-heavy, manual processes to handle installer paperwork, I saw an opportunity to streamline operations.
+The Production Manager App was built to modernize workflows in the construction industry—specifically within fiberglass insulation and gutters. After witnessing firsthand how companies rely on paper-heavy, manual processes to handle installer paperwork, I saw an opportunity to streamline operations.
 This app replaces inefficient routines with a secure, offline solution that automates payroll calculations, centralizes job data, and generates Excel reports—no cloud dependency, no wasted time, and no paper trails. It’s designed to bring real-world construction workflows into the future of tech, without compromising operational safety or control.
+
+This release delivers major upgrades to workflow management, reporting, and SQL Server data handling. All legacy versions have been consolidated into one unified build. SQLite has been fully removed. The application now uses SQL Server Express or Full SQL Server, depending on the user’s environment.
+
+------------------------------------------------------------
+NEW FEATURES AND ENHANCEMENTS
+------------------------------------------------------------
+
+1. New Work Ticket Form
+Users can now create, edit, and manage daily production work tickets directly inside the application.
+
+2. SQL Data Transfer Tool (Old Host → New Host)
+A guided workflow helps users migrate their SQL Server database from an old machine to a new host with minimal downtime.
+
+3. Work Ticket Reporting Suite
+Users can now generate:
+- Daily work ticket reports
+- Weekly summaries
+- Monthly reports
+Reports can be printed, exported to Excel, or generated as PDF files.
+
+4. Unified SQL Server Architecture (SQLite Removed)
+The previous SQLite version has been retired. The app now supports:
+- SQL Server Express (free, recommended for small teams)
+- Full SQL Server Standard/Enterprise (enterprise-grade)
+
+The user selects their SQL Server instance during setup. The app automatically configures the connection and prepares the database schema.
+
+5. UI and Stability Improvements
+- More intuitive interface
+- Streamlined upgrade flow using Gumroad license tiers
+- Enhanced security for license validation and local data handling
+- Minor bug fixes and performance improvements
+
+------------------------------------------------------------
+MULTI-USER SYNC & NETWORK REQUIREMENTS
+------------------------------------------------------------
+
+The Production Manager App uses SQL Server Express or Full SQL Server as the central data source. This allows multiple employees to stay up to date with job changes, work tickets, and reporting data in real time.
+
+For multi-user environments, employees must be connected to the company’s private network. This can be done through:
+
+• Local office network (LAN)
+• Company VPN (for remote workers)
+
+When connected, all users share the same SQL Server database and receive updates instantly. This ensures consistent data across all devices and prevents version conflicts.
 
 ------------------------------------------------------------
 DATABASE SELECTION (CHOOSE DURING INSTALLATION)
