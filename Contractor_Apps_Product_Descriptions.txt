@@ -15,6 +15,8 @@ The Plumbers App is built for plumbing contractors of all sizes. Manage rough‑
 Handyman App
 The Handyman App is made for handyman businesses, home repair specialists, and multi‑skill service pros. Track jobs, materials, labor hours, client details, and invoices with ease. Perfect for general repair, carpentry, drywall, flooring, and multi‑trade service work.
 
+Roofers App  
+The Roofers App is built specifically for roofing contractors who need a fast, accurate, and field‑ready workflow system. Track tear‑offs, installations, repairs, roofing materials, labor hours, jobsite details, and payroll in one unified platform. Ideal for shingle, metal, tile, and flat‑roof operations. Supports roofing‑specific units such as squares, bundles, rolls, and linear footage, with automated pay calculations and clean Excel exports.
 
 Each app is built for a specific trade, but all share the same clean, efficient workflow system. Contractors who operate in multiple service lines can combine apps for a unified business management experience. To explore all available apps and purchase additional tools, visit the full collection here:
 https://automateai56.gumroad.com/
