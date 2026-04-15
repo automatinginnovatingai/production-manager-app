@@ -1,4 +1,4 @@
-# Production Manager App – Offline Payroll & Job Tracker (.exe)
+Production Manager App – Offline Payroll & Job Tracker (.exe)
 
 This repository contains documentation for the Production Manager App — a closed‑source Windows application designed for small to large production teams to manage job entries, payroll, and material usage entirely offline.
 

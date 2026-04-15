@@ -18,5 +18,8 @@ The Handyman App is made for handyman businesses, home repair specialists, and m
 Roofers App  
 The Roofers App is built specifically for roofing contractors who need a fast, accurate, and field‑ready workflow system. Track tear‑offs, installations, repairs, roofing materials, labor hours, jobsite details, and payroll in one unified platform. Ideal for shingle, metal, tile, and flat‑roof operations. Supports roofing‑specific units such as squares, bundles, rolls, and linear footage, with automated pay calculations and clean Excel exports.
 
+Payroll App  
+The Payroll App is built for contractors who need fast, accurate, and automated payroll processing. Calculate hourly pay, piece‑rate, job‑pay, overtime, double‑time, blended‑rate premiums, and custom overtime rules with ease. Use it as a standalone payroll engine or connect it to any AIAI CRM App—including Gutter, Plumbing, Roofing, Handyman, Electrician, and Production Manager—for seamless payroll integration across all service lines.
+
 Each app is built for a specific trade, but all share the same clean, efficient workflow system. Contractors who operate in multiple service lines can combine apps for a unified business management experience. To explore all available apps and purchase additional tools, visit the full collection here:
 https://automateai56.gumroad.com/
