@@ -1,160 +1,206 @@
-Production Manager App – Offline Payroll & Job Tracker (.exe)
+Automating Innovating AI – Production Manager App
+README.txt
+Version: 2.0.0
+============================================================
 
-This repository contains documentation for the Production Manager App — a closed‑source Windows application designed for small to large production teams to manage job entries, payroll, and material usage entirely offline.
+Overview
+--------
+The Production Manager App is part of the Automating Innovating AI CRM Suite — a unified,
+multi‑tenant platform designed for construction‑industry trades. All CRM apps now share
+a common architecture:
 
-The Production Manager App was built to modernize workflows in the construction industry—specifically within fiberglass insulation and gutters. After witnessing firsthand how companies rely on paper-heavy, manual processes to handle installer paperwork, I saw an opportunity to streamline operations.
-This app replaces inefficient routines with a secure, offline solution that automates payroll calculations, centralizes job data, and generates Excel reports—no cloud dependency, no wasted time, and no paper trails. It’s designed to bring real-world construction workflows into the future of tech, without compromising operational safety or control.
+• Global Admin + Local Admin RBAC
+• company_id data isolation
+• Shared core tables (Companies, Divisions, Regions, Users, Roles, Permissions)
+• Centralized RBAC enforcement
+• Modular feature access per app
+• Inventory App + Payroll App integration
+• Offline‑first operation with secure local SQL storage
 
-This release delivers major upgrades to workflow management, reporting, and SQL Server data handling. All legacy versions have been consolidated into one unified build. SQLite has been fully removed. The application now uses SQL Server Express or Full SQL Server, depending on the user’s environment.
+This app manages production workflows, employee job tickets, payroll preparation,
+inventory usage, and reporting for your company.
 
-------------------------------------------------------------
-NEW FEATURES AND ENHANCEMENTS
-------------------------------------------------------------
+============================================================
+DATABASE SELECTION (IMPORTANT)
+============================================================
+On first launch, you must choose between SQL Express and SQL Server. This determines
+where your data will be stored.
 
-1. New Work Ticket Form
-Users can now create, edit, and manage daily production work tickets directly inside the application.
+SQL EXPRESS (Recommended for most users)
+• Best for small businesses, single‑computer setups, and teams under ~10 employees.
+• Free, installs automatically, and requires no IT knowledge.
+• Stores data locally on the same computer running the app.
+• Ideal for simple, reliable setups with minimal configuration.
 
-2. SQL Data Transfer Tool (Old Host → New Host)
-A guided workflow helps users migrate their SQL Server database from an old machine to a new host with minimal downtime.
+SQL SERVER (For larger companies or IT‑managed environments)
+• Best for companies that already use SQL Server or have an IT department.
+• Supports multiple computers connecting to the same shared database.
+• Allows centralized data storage on a server.
+• Ideal for larger teams, multi‑user environments, or companies needing advanced control.
 
-3. Work Ticket Reporting Suite
-Users can now generate:
-- Daily work ticket reports
-- Weekly summaries
-- Monthly reports
-Reports can be printed, exported to Excel, or generated as PDF files.
+If unsure, choose SQL Express. You can migrate to SQL Server later.
 
-4. Unified SQL Server Architecture (SQLite Removed)
-The previous SQLite version has been retired. The app now supports:
-- SQL Server Express (free, recommended for small teams)
-- Full SQL Server Standard/Enterprise (enterprise-grade)
+============================================================
+ADMIN ROLES
+============================================================
 
-The user selects their SQL Server instance during setup. The app automatically configures the connection and prepares the database schema.
+GLOBAL ADMIN (Corporate Level)
+• Creates companies, divisions, and regions
+• Manages subscription plans and license upgrades
+• Manages all admins (global + local)
+• Controls payroll schedules and exports
+• Oversees inventory, suppliers, and purchase orders
+• Integrates Payroll App and Inventory App with CRM modules
+• Full access to all reports and data
 
-5. UI and Stability Improvements
-- More intuitive interface
-- Streamlined upgrade flow using Gumroad license tiers
-- Enhanced security for license validation and local data handling
-- Minor bug fixes and performance improvements
+LOCAL ADMIN (Division/Region Level)
+• Enters employee job tickets and production data
+• Reviews work tickets before payroll is processed
+• Manages inventory and POs if permissions allow
+• Cannot modify subscription plans or corporate settings
+• Access limited by assigned role + permissions
 
-------------------------------------------------------------
-MULTI-USER SYNC & NETWORK REQUIREMENTS
-------------------------------------------------------------
-
-The Production Manager App uses SQL Server Express or Full SQL Server as the central data source. This allows multiple employees to stay up to date with job changes, work tickets, and reporting data in real time.
-
-For multi-user environments, employees must be connected to the company’s private network. This can be done through:
-
-• Local office network (LAN)
-• Company VPN (for remote workers)
-
-When connected, all users share the same SQL Server database and receive updates instantly. This ensures consistent data across all devices and prevents version conflicts.
-
-------------------------------------------------------------
-DATABASE SELECTION (CHOOSE DURING INSTALLATION)
-------------------------------------------------------------
-
-SQL Server Express (Local SQL Server – Small Businesses)
-- Best for small businesses with 1–5 employees.
-- Installs Microsoft SQL Server Express automatically during setup.
-- Creates a secure, local SQL database on the company’s computer.
-- Supports multiple users on the same network.
-- More reliable and scalable than file-based databases.
-- Free to use (SQL Server Express has no licensing cost).
-- Has Microsoft‑imposed limits on database size, memory, and CPU.
-- Choose SQL Server Express if you want a free, reliable, multi‑user local database.
-
-Full SQL Server (Enterprise‑Grade – Medium to Large Companies)
-- Best for companies with IT infrastructure or a dedicated server.
-- Uses the full version of Microsoft SQL Server (Standard or Enterprise).
-- No size, memory, or CPU limits.
-- Supports many users, large data volumes, and high‑performance workloads.
-- Includes advanced features such as SQL Server Agent, high availability, and enterprise‑level security.
-- Requires a paid SQL Server license.
-- Choose Full SQL Server if your company needs maximum performance, scalability, and enterprise features.
-
-------------------------------------------------------------
+============================================================
 KEY FEATURES
-------------------------------------------------------------
+============================================================
 
-- Offline‑first .exe app with no cloud dependencies
-- Secure login with salted + hashed credentials
-- Weekly payroll calculation based on:
-  • Square footage × rate
-  • Bags installed × piece rate
-  • Hourly wage
-- Auto‑splitting pay across multiple employees per job
-- Full job entry interface with builder, model, lot/block, and insulation specs
-- Auto‑export to Excel with per‑employee sheets grouped by week
-- SQL Express or SQL Server database storage (installer‑selected)
-- Built‑in data transfer system using SQL .bak files
-- Automatic version checking and update prompts
-- Unified architecture — all plans in one application
+Secure Login & RBAC
+• Bcrypt‑protected passwords with salted + hashed credentials.
+• Role‑based access control enforced by centralized RBAC.
+• company_id isolation across all tables.
 
-------------------------------------------------------------
-LICENSE ENFORCEMENT
-------------------------------------------------------------
+Payroll Management
+• Calculate weekly payroll using:
+  - Square footage × rate
+  - Bags installed × piece rate
+  - Hourly wage
+• Supports up to four employees per job.
+• Automatic pay splitting.
+• Material usage tracking (manufacturer, type, size).
+• Enter “0” in unused fields to avoid calculation errors.
 
-The .exe is encrypted and gated by Gumroad license validation.
+Employee Job Entry (Local Admin)
+Each job entry includes:
+• Employee names and IDs
+• Hours worked
+• Job role
+• Builder, model, lot/block
+• Optional product details (e.g., R‑30x16, Fi‑Foil, baffles)
+• All saved using company_id for multi‑tenant isolation
 
-- Users must enter a valid license key on first launch
-- License keys are verified via Gumroad’s API
-- Invalid or revoked keys restrict access
-- No backend session store — validation is stateless and secure
-- After activation, the app operates fully offline
+Work Ticket Printing
+• Local Admins can print work tickets directly from their machine.
+• Printing does not require company_id (local action).
+• Saved tickets always include company_id.
 
-------------------------------------------------------------
-VERSIONS AVAILABLE
-------------------------------------------------------------
+Pay Week Entry & Auto‑Export (Global Admin)
+• Set payroll start and end days (e.g., Thursday → Wednesday).
+• App automatically exports payroll 2 days after the end day.
+• Exports saved under:
+  Documents/AIAI_PM_App/Payroll_Excels/YYYY‑MM/Payroll_YYYY‑MM.xlsx
+• Each employee receives a dedicated worksheet.
+• Totals auto‑calculated.
+• Option to open the workbook immediately after export.
 
-The app is offered in three tiers to suit different team sizes and reporting needs:
+Inventory Integration
+• Universal material database (generic fields)
+• CRM apps store trade‑specific material extensions
+• Supplier management
+• Purchase order creation and receiving
+• Inventory adjustments and transaction logs
+• All inventory operations scoped by company_id
 
-Basic
-- Single‑user or small team access
-- Core job entry and payroll tools
-- Limited export customization
+Reporting
+• Weekly production sheets
+• Payroll exports
+• Material usage reports
+• All reports require reports_view permission
 
-Pro
-- All Basic features
-- Enhanced Excel exports
-- Prepopulated materials, employees, and builders
-- Faster data entry with structured dropdowns
+Data Protection
+• Automatic duplicate detection
+• Local SQL database (Express or Server)
+• No cloud storage
+• All SQL queries scoped by company_id
 
-Enterprise
-- All Pro features
-- Custom reporting templates
-- Priority support
-- Installer login functionality
-- Daily production input by installers
-- Separate login pages for admins and installers
+Auto‑Updating
+• App checks for new versions automatically.
 
-Add‑ons
-- Installer Add‑on: Allows installers to log in and complete production paperwork (Enterprise required)
-- Admin Add‑on: Allows additional administrators to log in across all versions
+User‑Friendly Interface
+• Fullscreen workflow
+• Large buttons and clear navigation
+• No technical knowledge required
 
-All versions are distributed via Gumroad. License keys are unique per purchase and required to unlock the app.
+============================================================
+SYSTEM REQUIREMENTS
+============================================================
+• Windows 10 or later
+• Microsoft Excel (required for viewing reports)
+• Approximately 980 MB free disk space
+• SQL Express or SQL Server (selected during setup)
+• Internet connection required only for license activation
 
-👉 Production Manager App Gumroad Page:
-https://automateai56.gumroad.com/l/koxupw
+============================================================
+LICENSE ACTIVATION
+============================================================
+A valid Gumroad license key is required.
 
+• You will be prompted on first launch.
+• The app verifies your key securely.
+• If invalid or revoked, access is restricted.
+• Internet is required only once for activation.
 
-------------------------------------------------------------
-THIS REPO
-------------------------------------------------------------
+============================================================
+GETTING STARTED
+============================================================
+1. Launch the Production Manager App.
+2. Choose SQL Express or SQL Server.
+3. Enter your Gumroad license key.
+4. Register your Global Admin account.
+5. Create Local Admins as needed.
+6. Log in using your credentials.
+7. Navigate to the Admin Interface.
+8. Open “Employee Worksheet” to begin entering jobs and payroll.
 
-This GitHub repository does NOT contain the .exe binary or source code.  
-It exists to document the app’s architecture, license model, and usage flow.
+============================================================
+NAVIGATION & EXITING
+============================================================
+• Use the dashboard to access all modules.
+• Press Esc to exit fullscreen mode.
+• Click “Exit” on any screen to close the app.
 
-------------------------------------------------------------
-LICENSE
-------------------------------------------------------------
+============================================================
+TIPS FOR BEST RESULTS
+============================================================
+• Export payroll regularly to maintain backups.
+• Keep Excel updated.
+• Use strong admin passwords.
+• Ensure payroll data is complete before the auto‑export date.
+• Review admin permissions periodically.
 
-This software is proprietary and closed‑source.  
-See LICENSE.txt for details.
+============================================================
+TROUBLESHOOTING
+============================================================
 
-------------------------------------------------------------
+App won’t launch:
+• Ensure Windows 10+ is installed.
+• Confirm Excel is installed.
+
+License key rejected:
+• Verify your Gumroad purchase email.
+• Check for typos.
+
+Export failed:
+• Ensure Excel is installed.
+• Confirm all payroll fields are filled.
+
+Auto‑update not working:
+• Check your internet connection.
+• Ensure firewall isn’t blocking the app.
+
+============================================================
 SUPPORT
-------------------------------------------------------------
+============================================================
+Questions or feedback?
+Email: automatinginnovatingai@outlook.com
 
-Questions or feedback? Contact the developer:  
-automatinginnovatingai@outlook.com
+Thank you for using the Automating Innovating AI CRM Suite!
