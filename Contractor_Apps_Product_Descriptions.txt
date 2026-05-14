@@ -24,5 +24,8 @@ The Payroll App is built for contractors who need fast, accurate, and automated 
 Inventory App
 The Inventory App is a standalone, offline-capable Windows application designed to manage materials, warehouses, and stock levels with precision and simplicity. It centralizes all material data, tracks multi‑warehouse inventory, logs every transaction, and provides admin‑level reporting. Employees can view, search, and adjust inventory, while admins handle setup, stock control, and exports.
 
+Breeder Management App
+The Breeder Management App is built for dog‑breeding programs of all sizes—from family‑run kennels to multi‑location operations. Track animals, heat cycles, pairings, litters, puppies, vaccinations, reminders, and whelping forecasts in one organized workflow. Designed for breeders who need accuracy, structure, and a paperless system for managing every stage of the breeding process. Ideal for maintaining genetic records, forecasting whelping dates, and ensuring smooth, compliant breeding operations.
+
 Each app is built for a specific trade, but all share the same clean, efficient workflow system. Contractors who operate in multiple service lines can combine apps for a unified business management experience. To explore all available apps and purchase additional tools, visit the full collection here:
 https://automateai56.gumroad.com/
