@@ -72,29 +72,14 @@ Enterprise includes:
 
 ---
 
-### **Admin Add‑on**
-A supplemental license for each additional administrator beyond the main admin included with the Enterprise plan.  
-Ensures secure, individual admin access without shared credentials.  
-Cannot function alone — requires an active Basic, Pro, or Enterprise plan.
-
----
-
-### **Installer Add‑on**
-Available only to Enterprise customers.  
-Provides installer‑level login access for organizations that deploy installers or field crews.  
-Cannot be used as a standalone license.
-
----
-
 ## License Activation
-This app requires a valid Gumroad license key to unlock full functionality.
+A valid Stripe subscription is required to use this application.
 
-- You will be prompted to enter your license key on first launch.  
-- The app verifies your key securely via Gumroad’s API.  
-- If the license is invalid or revoked, access will be restricted.  
-- Internet access is required for initial license validation.
-
-After activation, the app operates fully offline.
+• On first launch, the app checks your subscription status securely through Stripe.
+• If your subscription is active, the app unlocks full access.
+• If your subscription is canceled, expired, or unpaid, access is restricted.
+• Internet is required only during subscription verification and plan changes.
+• All billing and upgrades are handled through Stripe’s secure checkout.
 
 ---
 
