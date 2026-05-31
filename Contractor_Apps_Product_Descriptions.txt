@@ -30,5 +30,11 @@ The Breeder Management App is built for dog‑breeding programs of all sizes—f
 Pet Daycare Manager App  
 The Pet Daycare Manager App is built for daycare and boarding facilities that need a fast, organized, and reliable workflow system. Track pets, owners, reservations, check‑ins, check‑outs, kennels, feeding, medication, playtime, incident reports, billing, vaccinations, and staff tasks—all in one unified platform. Ideal for pet‑care businesses that want a professional, paperless system to manage daily operations with accuracy and confidence.
 
+Pet Service App
+The Pet Service App is built for grooming salons, trainers, and pet‑care professionals who need a fast, organized, and modern workflow system. Manage pets, owners, appointments, grooming notes, training progress, behavior notes, service history, reminders, marketing kits, staff, and reporting—all in one unified platform. Ideal for grooming shops, training programs, and multi‑service pet businesses that want a professional, paperless system to run daily operations with accuracy and confidence.
+
+Pet Owner App  
+The Pet Owner App is built for pet parents who want an easy, organized, and modern way to manage their pets’ daily care. Track vaccinations, medications, appointments, feeding schedules, grooming notes, activities, behavior, and important records—all in one simple, friendly dashboard. Perfect for busy pet owners who want a reliable, paperless system to stay on top of their pets’ health, routines, and well‑being with confidence.
+
 Each app is built for a specific trade, but all share the same clean, efficient workflow system. Contractors who operate in multiple service lines can combine apps for a unified business management experience. To explore all available apps and purchase additional tools, visit the full collection here:
-https://automateai56.gumroad.com/
+https://automatinginnovatingai.wordpress.com/
