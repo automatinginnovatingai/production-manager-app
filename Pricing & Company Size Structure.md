@@ -169,6 +169,17 @@ Pricing (Monthly)
 
 A personalized app for Pet Owners.
 
+8. AI Daily Life Assistant
+
+Pricing (Monthly)
+- Standard: $4.99/mo
+
+The smarter way to organize your life, plan your day, track meals, log workouts, and generate personalized insights.
+
+9. Token Pricing System
+- $10 = 100 tokens
+- $25 = 300 tokens
+- $50 = 700 tokens
 
 https://automatinginnovatingai.wordpress.com
 
